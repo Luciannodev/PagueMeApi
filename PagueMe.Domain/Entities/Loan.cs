@@ -20,6 +20,10 @@
 
         public  List<Installment> Installments { get; set; }
 
+        public Loan()
+        {
+            
+        }
         public Loan(float totalValue, int paymentStatus, int creditorId, int debtorId, String dueDate, Creditor creditor, Debtor debtor, float interest, float loanValue, List<Installment> installments)
         {
             TotalValue = totalValue;

@@ -8,7 +8,7 @@ namespace PagueMe.Ioc
 {
     public static class DependecyInjection
     {
-        public static IServiceCollection AddInfrastructure(IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             //mysql
             //services.AddMySqlDataSource(configuration.GetConnectionString("Default")!);

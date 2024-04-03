@@ -17,7 +17,7 @@ namespace PagueMe.Infra.DataProvider.Repositories
 
         public Creditor GetLoanByIdentityNumber(string identityNumber)
         {
-            Creditor? creditor = _context.Creditors.Find(identityNumber);
+            Creditor? creditor = _context.Creditor.Find(identityNumber);
             return creditor;
         }
 

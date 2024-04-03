@@ -11,6 +11,8 @@
 
         public List<Loan> Loans { get; set; }
 
+        public Creditor() { }
+      
         public Creditor(string name, int balance, string identityNumber, string password, string email, List<Loan> loans)
         {
             Name = name;

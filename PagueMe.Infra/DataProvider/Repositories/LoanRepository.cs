@@ -15,7 +15,7 @@ namespace PagueMe.Infra.DataProvider.Repositories
 
         public Loan CreateLoan(Loan loan)
         {
-            _context.Loans.Add(loan);
+            _context.Loan.Add(loan);
             _context.SaveChanges();
             return loan;
         }

@@ -8,7 +8,14 @@ namespace PagueMe.Infra.DataProvider.EntitiesConfiguration
     {
         public void Configure(EntityTypeBuilder<Creditor> builder)
         {
-            builder.HasKey(x => x.CreditorId).HasName("creditor_id");
+            builder.HasKey(x => x.CreditorId);
+
+
+            builder.Property(x => x.CreditorId)
+                .HasColumnName("creditor_id")
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
             builder.Property(x => x.Name).HasColumnName("name");
             builder.Property(x => x.Balance).HasColumnName("balance");
             builder.Property(x => x.IdentityNumber).HasColumnName("identity_number");

@@ -13,6 +13,10 @@ namespace PagueMe.Infra.DataProvider.EntitiesConfiguration
             builder.Property(x => x.Value).HasColumnName("value");
             builder.Property(x => x.StatusPayment).HasColumnName("status_payment");
             builder.Property(x => x.DueDate).HasColumnName("due_date");
+
+            builder.HasOne(x => x.Loan)
+                .WithMany(x => x.Installments)
+                .HasForeignKey(x => x.LoanId);
         }
     }
 }
