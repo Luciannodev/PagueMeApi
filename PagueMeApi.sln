@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagueMe.Domain", "PagueMe.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagueMe.Application", "PagueMe.Application\PagueMe.Application.csproj", "{BCC1E86A-538C-43D9-BC48-9941D9BB5158}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagueMe.Api", "PagueMe.Api\PagueMe.Api.csproj", "{7234FBB5-E761-4A27-A227-4F6FD76CED87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagueMe.Api", "PagueMe.Api\PagueMe.Api.csproj", "{7234FBB5-E761-4A27-A227-4F6FD76CED87}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagueMe.Ioc", "PagueMe.Ioc\PagueMe.Ioc.csproj", "{603C56E9-B6CE-475F-9FA2-3F54B378F0AF}"
 EndProject

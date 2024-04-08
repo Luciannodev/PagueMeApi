@@ -6,17 +6,23 @@ namespace PagueMe.Application.UseCase
 {
     public class LoanUseCase : ILoanUseCase
     {
-        private readonly ILoanRepository repository;
+        private readonly ILoanRepository _repository;
 
         public LoanUseCase(ILoanRepository repository)
         {
-            this.repository = repository;
+            _repository = repository;
         }
 
-        public Loan CreateLoan(Loan request)
+        public Loan CreateLoan(Loan loan)
         {
-            repository.CreateLoan(request);
-            return repository.CreateLoan(request);
+
+            
+
+
+
+            return _repository.CreateLoan(loan);
+
+
         }
 
         public Loan LoanPayment(Loan request)

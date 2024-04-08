@@ -1,32 +1,55 @@
 
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Pagame.Api.Dtos;
+using PagueMe.Api.Dtos.Vallidators;
 using PagueMe.Api.Mapper;
+using PagueMe.Infra.DataProvider.Context;
 using PagueMe.Ioc;
-internal class Program
+
+
+
+var builder = WebApplication.CreateBuilder(args);
+
+
+
+// Add services to the container.
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddTransient<DataSeeder>();
+builder.Services.AddControllers().AddFluentValidation(config =>
+    config.RegisterValidatorsFromAssembly(typeof(Program).Assembly));
+builder.Services.AddTransient<IValidator<CreditorRequestDTO>, CreditorValidator>();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(DtoToEntity));
+var app = builder.Build();
+
+
+SeedData(app);
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    private static void Main(string[] args)
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+
+
+
+
+void SeedData(WebApplication app)
+{
+    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+    using (var scope = scopedFactory.CreateScope())
     {
-        var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container.
-        builder.Services.AddInfrastructure(builder.Configuration);
-        builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddSwaggerGen();
-        builder.Services.AddAutoMapper(typeof(DtoToEntity));
-        var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
-        app.UseHttpsRedirection();
-        app.UseAuthorization();
-
-        app.MapControllers();
-
-        app.Run();
+        var service = scope.ServiceProvider.GetService<DataSeeder>();
+        service.Seed();
     }
 }

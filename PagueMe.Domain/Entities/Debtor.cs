@@ -1,10 +1,10 @@
 ﻿namespace PagueMe.Domain.Entities
 {
-    public class Debtor(string name, String identityNumber)
+    public class Debtor
     {
         public int DebtorId { get; set; }
-        public String Name { get; set; } = name;
-        public String IdentityNumber { get; set; } = identityNumber;
+        public string Name { get; set; }
+        public string IdentityNumber { get; set; }
         public List<Loan> Loans { get; set; }
     }
 

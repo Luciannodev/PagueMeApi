@@ -18,24 +18,7 @@
 
         public float LoanValue {  get; set; }
 
-        public  List<Installment> Installments { get; set; }
+        public  List<Installment> Installment { get; set; }
 
-        public Loan()
-        {
-            
-        }
-        public Loan(float totalValue, int paymentStatus, int creditorId, int debtorId, String dueDate, Creditor creditor, Debtor debtor, float interest, float loanValue, List<Installment> installments)
-        {
-            TotalValue = totalValue;
-            PaymentStatus = paymentStatus;
-            CreditorId = creditorId;
-            DebtorId = debtorId;
-            DueDate = DateTime.Parse(dueDate);
-            Creditor = creditor;
-            Debtor = debtor;
-            Interest = interest;
-            LoanValue = loanValue;
-            Installments = installments;
-        }
     }
 }

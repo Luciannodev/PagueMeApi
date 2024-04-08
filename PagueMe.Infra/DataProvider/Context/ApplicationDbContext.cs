@@ -15,6 +15,7 @@ namespace PagueMe.Infra.DataProvider.Context
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
         }
     }
 }
