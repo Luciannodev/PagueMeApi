@@ -1,6 +1,7 @@
 ﻿using PagueMe.Domain.Entities;
 using PagueMe.Domain.Repositories;
 using PagueMe.Infra.DataProvider.Context;
+using System.Linq;
 
 namespace PagueMe.Infra.DataProvider.Repositories
 {
@@ -15,9 +16,9 @@ namespace PagueMe.Infra.DataProvider.Repositories
             return creditor;
         }
 
-        public Creditor GetLoanByIdentityNumber(string identityNumber)
+        public Creditor GetCreditorByIdentityNumber(string identityNumber)
         {
-            Creditor? creditor = _context.Creditor.Find(identityNumber);
+            Creditor? creditor = _context.Creditor.FirstOrDefault(x => x.IdentityNumber == identityNumber);
             return creditor;
         }
 

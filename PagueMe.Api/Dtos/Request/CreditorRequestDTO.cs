@@ -2,13 +2,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Pagame.Api.Dtos
+namespace PagueMe.Api.Dtos.Request
 {
     public class CreditorRequestDTO
     {
         [JsonPropertyName("nome")]
         [Required(ErrorMessage = "É Necessario preencher o nome!")]
-        public string  Name { get; set; }
+        public string Name { get; set; }
         [JsonPropertyName("cpf")]
         [Required(ErrorMessage = "É Necessario preencher o CPF!")]
         public string IdentityNumber { get; set; }

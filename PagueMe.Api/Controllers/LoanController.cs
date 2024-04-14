@@ -1,44 +1,39 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
-using Pagame.Api.Dtos;
+using PagueMe.Api.Dtos.Request;
+using PagueMe.Api.Dtos.Response;
+using PagueMe.Api.Mapper;
 using PagueMe.Application.Interfaces;
 using PagueMe.Domain.Entities;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace PagueMe.Api.Controllers
 {
 
     [ApiController]
-    public class LoanController(ILoanUseCase iLoanUseCase, IMapper mapper) : ControllerBase
+    public class LoanController : ControllerBase
     {
 
-        private readonly ILoanUseCase _ILoanUseCase = iLoanUseCase;
-        private readonly IMapper _Mapper = mapper;
+        private readonly ILoanUseCase _ILoanUseCase;
+        private readonly DtoToEntityHelper _DtoToEntityHelper;
+
+        public LoanController(ILoanUseCase loanUseCase, IMapper mapper)
+        {
+            _ILoanUseCase = loanUseCase;
+            _DtoToEntityHelper = new DtoToEntityHelper(mapper);
+        }
 
         [HttpPost("register-loan")]
-        public ActionResult<Loan> RegisterNewLoan(LoanRequestDTO loanRequest)
+        public ActionResult<LoanResponseDTO> RegisterNewLoan(LoanRequestDTO loanRequest)
         {
-            Loan loanEntity = BuildRequest(loanRequest);
+
+            Loan loanEntity = _DtoToEntityHelper.BuildRequest(loanRequest);
             Loan registredLoan = _ILoanUseCase.CreateLoan(loanEntity);
-            return new ActionResult<Loan>(registredLoan);
+            LoanResponseDTO loanResponse = _DtoToEntityHelper.EntityToDto(registredLoan);
+            return new ActionResult<LoanResponseDTO>(loanResponse);
         }
 
-        private Loan BuildRequest(LoanRequestDTO loanRequest)
-        {
-            loanRequest.IdentityNumber = getIdentifyNumber();
-            Loan loanEntity = _Mapper.Map<Loan>(loanRequest);
-            loanEntity.Debtor = new Debtor() { Name = loanRequest.Name };
-            return loanEntity;
-        }
 
-        private string getIdentifyNumber()
-        {
-            Request.Headers.TryGetValue("Authorization", out StringValues headerValue);
-            string jwtEncoded = headerValue.ToString().Substring(7);
-            var token = new JwtSecurityToken(jwtEncoded);
-            var cpf = token.Claims.First(c => c.Type == "cpf").Value;
-            return cpf;
-        }
+
+
     }
 }

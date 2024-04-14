@@ -6,6 +6,6 @@ namespace PagueMe.Domain.Repositories
     {
         public Creditor CreateCreditor(Creditor creditor);
         public Creditor UpdateCreditor(Creditor creditor);
-        public Creditor GetLoanByIdentityNumber(string identityNumber);
+        public Creditor GetCreditorByIdentityNumber(string identityNumber);
     }
 }

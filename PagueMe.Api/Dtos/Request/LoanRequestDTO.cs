@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Pagame.Api.Dtos
+namespace PagueMe.Api.Dtos.Request
 {
     public class LoanRequestDTO
     {
@@ -22,7 +22,7 @@ namespace Pagame.Api.Dtos
 
         public int PaymentStatus { get; set; } = 1;
 
-        public string ?IdentityNumber { get; set; }
+        public string? IdentityNumber { get; set; }
     }
 
 

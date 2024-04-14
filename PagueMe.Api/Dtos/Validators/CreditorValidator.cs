@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Pagame.Api.Dtos;
+using PagueMe.Api.Dtos.Request;
 
 namespace PagueMe.Api.Dtos.Vallidators
 {

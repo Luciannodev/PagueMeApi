@@ -1,32 +1,41 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Pagame.Api.Dtos;
+using PagueMe.Api.Dtos.Request;
+using PagueMe.Api.Mapper;
 using PagueMe.Application.Interfaces;
 using PagueMe.Domain.Entities;
 
 namespace PagueMe.Api.Controllers
 {
     [ApiController]
-    public class CreditorController(ICreditorUseCase creditorUsecase,IMapper mapper) : ControllerBase
+    public class CreditorController: ControllerBase
     {
 
-        private readonly ICreditorUseCase _CreditorUsecase = creditorUsecase;
-        private readonly IMapper _Mapper = mapper;
+        private readonly ICreditorUseCase _CreditorUsecase ;
+        private readonly DtoToEntityHelper _DtoToEntityHelper ;
+
+        public CreditorController(ICreditorUseCase creditorUsecase,IMapper mapper)
+        {
+            _CreditorUsecase = creditorUsecase;
+            _DtoToEntityHelper = new DtoToEntityHelper(mapper);
+        }
 
         [HttpPost("register")]
         public ActionResult RegisterCreditor(CreditorRequestDTO creditorRequestDTO)
         {
             try
             {
-                Creditor creditorEntity = _Mapper.Map<Creditor>(creditorRequestDTO);
+                Creditor creditorEntity = _DtoToEntityHelper.DtoToEntity(creditorRequestDTO);
                 _CreditorUsecase.CreateCreditor(creditorEntity);
                 return Content("Seu Cadastro foi Realizado Com Sucesso");
             }
             catch (Exception ex)
             {
-                throw new Exception("Não foi possivel Cadastrar o Usuario");
+                throw new Exception($"Não foi possivel Cadastrar o Usuario{ex}");
             }
 
         }
+
+
     }
 }

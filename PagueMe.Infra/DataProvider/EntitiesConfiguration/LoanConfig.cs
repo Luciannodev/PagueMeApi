@@ -18,6 +18,7 @@ namespace PagueMe.Infra.DataProvider.EntitiesConfiguration
             builder.Property(x => x.DueDate).HasColumnName("due_data");
             builder.Property(x => x.RegistrationDate).HasColumnName("registration_date");
             builder.Property(x => x.Interest).HasColumnName("interest");
+            builder.Property(x => x.LoanValue).HasColumnName("loan_value");
 
             builder.HasOne(x => x.Debtor)
                 .WithMany(x => x.Loans)

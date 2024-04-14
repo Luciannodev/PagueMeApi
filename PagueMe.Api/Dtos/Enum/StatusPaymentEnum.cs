@@ -2,8 +2,8 @@
 {
     public enum StatusPaymentEnum
     {
-        pending = 0,
-        paid = 1,
+        pending = 1,
+        paid = 2,
         
     }
 }

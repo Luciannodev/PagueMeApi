@@ -1,7 +1,7 @@
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Pagame.Api.Dtos;
+using PagueMe.Api.Dtos.Request;
 using PagueMe.Api.Dtos.Vallidators;
 using PagueMe.Api.Mapper;
 using PagueMe.Infra.DataProvider.Context;
@@ -21,7 +21,7 @@ builder.Services.AddControllers().AddFluentValidation(config =>
 builder.Services.AddTransient<IValidator<CreditorRequestDTO>, CreditorValidator>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen();
-builder.Services.AddAutoMapper(typeof(DtoToEntity));
+builder.Services.AddAutoMapper(typeof(DtoMapper));
 var app = builder.Build();
 
 
