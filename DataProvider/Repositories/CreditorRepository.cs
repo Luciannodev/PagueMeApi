@@ -1,8 +1,8 @@
-﻿using PagueMe.Domain.Entities;
+﻿using PagueMe.DataProvider.Context;
+using PagueMe.Domain.Entities;
 using PagueMe.Domain.Repositories;
-using PagueMe.Infra.DataProvider.Context;
 
-namespace PagueMe.Infra.DataProvider.Repositories
+namespace PagueMe.DataProvider.Repositories
 {
     public class CreditorRepository(ApplicationDbContext context) : ICreditorRepository
     {

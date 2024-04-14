@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PagueMe.Domain.Entities;
 
-namespace PagueMe.Infra.DataProvider.Context
+namespace PagueMe.DataProvider.Context
 {
     public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
     {

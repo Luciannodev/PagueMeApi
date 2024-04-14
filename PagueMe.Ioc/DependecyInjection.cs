@@ -3,9 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PagueMe.Application.Interfaces;
 using PagueMe.Application.UseCase;
+using PagueMe.DataProvider.Context;
+using PagueMe.DataProvider.Repositories;
 using PagueMe.Domain.Repositories;
-using PagueMe.Infra.DataProvider.Context;
-using PagueMe.Infra.DataProvider.Repositories;
+
 
 namespace PagueMe.Ioc
 {

@@ -4,7 +4,7 @@ using FluentValidation.AspNetCore;
 using PagueMe.Api.Dtos.Request;
 using PagueMe.Api.Dtos.Vallidators;
 using PagueMe.Api.Mapper;
-using PagueMe.Infra.DataProvider.Context;
+using PagueMe.DataProvider.Context;
 using PagueMe.Ioc;
 
 

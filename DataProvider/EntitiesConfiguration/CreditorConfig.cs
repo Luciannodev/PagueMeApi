@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PagueMe.Domain.Entities;
 
-namespace PagueMe.Infra.DataProvider.EntitiesConfiguration
+namespace PagueMe.DataProvider.EntitiesConfiguration
 {
     public class CreditorConfig : IEntityTypeConfiguration<Creditor>
     {
@@ -21,7 +21,7 @@ namespace PagueMe.Infra.DataProvider.EntitiesConfiguration
             builder.Property(x => x.IdentityNumber).HasColumnName("identity_number");
             builder.Property(x => x.Password).HasColumnName("password");
             builder.Property(x => x.Email).HasColumnName("email");
-            
+
         }
     }
 }

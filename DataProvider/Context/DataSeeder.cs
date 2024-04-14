@@ -1,7 +1,6 @@
 ﻿using PagueMe.Domain.Entities;
-using System.Net.NetworkInformation;
 
-namespace PagueMe.Infra.DataProvider.Context
+namespace PagueMe.DataProvider.Context
 {
     public class DataSeeder
     {
@@ -12,7 +11,7 @@ namespace PagueMe.Infra.DataProvider.Context
             _applicationDbContext = applicationDbContext;
         }
 
-        public void Seed ()
+        public void Seed()
         {
             if (!_applicationDbContext.PaymentStatus.Any())
             {

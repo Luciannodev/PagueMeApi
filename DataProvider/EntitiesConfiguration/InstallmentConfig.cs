@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PagueMe.Domain.Entities;
 
-namespace PagueMe.Infra.DataProvider.EntitiesConfiguration
+namespace PagueMe.DataProvider.EntitiesConfiguration
 {
     public class InstallmentConfig : IEntityTypeConfiguration<Installment>
     {
