@@ -5,7 +5,7 @@ namespace PagueMe.Application.Interfaces
 {
     public interface ICreditorUseCase
     {
-        public Creditor AddValueCreditor(float totalValue, string identityNumber);
+        public Creditor AddValueToCreditor(string identityNumber, float totalValue);
         public Creditor CreateCreditor(Creditor request);
         public Creditor GetCreditor(string  identityNumber);
     }

@@ -22,7 +22,7 @@ namespace PagueMe.Application.UseCase
 
         public Loan CreateLoan(Loan loan)
         {
-            Creditor creditor = _creditorUseCase.AddValueCreditor(loan.TotalValue, GetIdentifyNumber());
+            Creditor creditor = _creditorUseCase.AddValueToCreditor(GetIdentifyNumber(), loan.TotalValue);
             loan.Creditor = creditor;
             return _loanRepository.CreateLoan(loan);
 
@@ -31,11 +31,17 @@ namespace PagueMe.Application.UseCase
 
         public string GetIdentifyNumber()
         {
+            JwtSecurityToken token = GetJwt();
+            var cpf = token.Claims.First(c => c.Type == "cpf").Value;
+            return cpf;
+        }
+
+        private JwtSecurityToken GetJwt()
+        {
             _httpRequest.Headers.TryGetValue("Authorization", out StringValues headerValue);
             string jwtEncoded = headerValue.ToString().Substring(7);
             var token = new JwtSecurityToken(jwtEncoded);
-            var cpf = token.Claims.First(c => c.Type == "cpf").Value;
-            return cpf;
+            return token;
         }
 
         public Loan LoanPayment(Loan request)

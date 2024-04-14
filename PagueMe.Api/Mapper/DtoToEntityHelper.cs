@@ -5,16 +5,11 @@ using PagueMe.Domain.Entities;
 
 namespace PagueMe.Api.Mapper
 {
-    public class DtoToEntityHelper
+    public class DtoToEntityHelper(IMapper mapper)
     {
-        private readonly IMapper _Mapper;
+        private readonly IMapper _mapper = mapper;
 
-        public DtoToEntityHelper(IMapper mapper)
-        {
-            _Mapper = mapper;
-
-        }
-        public Loan BuildRequest(LoanRequestDTO loanRequest)
+        public Loan BuildLoanRequest(LoanRequestDTO loanRequest)
         {
             Loan loanEntity = DtoToEntity(loanRequest);
             loanEntity.Debtor = new Debtor() { Name = loanRequest.Name };
@@ -23,17 +18,17 @@ namespace PagueMe.Api.Mapper
 
         private Loan DtoToEntity(LoanRequestDTO loanRequest)
         {
-            return _Mapper.Map<Loan>(loanRequest);
+            return _mapper.Map<Loan>(loanRequest);
         }
 
         public Creditor DtoToEntity(CreditorRequestDTO creditorRequestDTO)
         {
-            return _Mapper.Map<Creditor>(creditorRequestDTO);
+            return _mapper.Map<Creditor>(creditorRequestDTO);
         }
 
         public LoanResponseDTO EntityToDto(Loan loan)
         {
-            return _Mapper.Map<LoanResponseDTO>(loan);
+            return _mapper.Map<LoanResponseDTO>(loan);
         }
     }
 }

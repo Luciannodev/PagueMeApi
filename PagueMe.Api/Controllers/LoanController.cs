@@ -13,22 +13,22 @@ namespace PagueMe.Api.Controllers
     public class LoanController : ControllerBase
     {
 
-        private readonly ILoanUseCase _ILoanUseCase;
-        private readonly DtoToEntityHelper _DtoToEntityHelper;
+        private readonly ILoanUseCase _IloanUseCase;
+        private readonly DtoToEntityHelper _dtoHelper;
 
         public LoanController(ILoanUseCase loanUseCase, IMapper mapper)
         {
-            _ILoanUseCase = loanUseCase;
-            _DtoToEntityHelper = new DtoToEntityHelper(mapper);
+            _IloanUseCase = loanUseCase;
+            _dtoHelper = new DtoToEntityHelper(mapper);
         }
 
         [HttpPost("register-loan")]
         public ActionResult<LoanResponseDTO> RegisterNewLoan(LoanRequestDTO loanRequest)
         {
 
-            Loan loanEntity = _DtoToEntityHelper.BuildRequest(loanRequest);
-            Loan registredLoan = _ILoanUseCase.CreateLoan(loanEntity);
-            LoanResponseDTO loanResponse = _DtoToEntityHelper.EntityToDto(registredLoan);
+            Loan loanEntity = _dtoHelper.BuildLoanRequest(loanRequest);
+            Loan registredLoan = _IloanUseCase.CreateLoan(loanEntity);
+            LoanResponseDTO loanResponse = _dtoHelper.EntityToDto(registredLoan);
             return new ActionResult<LoanResponseDTO>(loanResponse);
         }
 

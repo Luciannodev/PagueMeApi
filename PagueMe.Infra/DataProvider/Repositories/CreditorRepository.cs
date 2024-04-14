@@ -1,7 +1,6 @@
 ﻿using PagueMe.Domain.Entities;
 using PagueMe.Domain.Repositories;
 using PagueMe.Infra.DataProvider.Context;
-using System.Linq;
 
 namespace PagueMe.Infra.DataProvider.Repositories
 {
@@ -18,15 +17,24 @@ namespace PagueMe.Infra.DataProvider.Repositories
 
         public Creditor GetCreditorByIdentityNumber(string identityNumber)
         {
+
             Creditor? creditor = _context.Creditor.FirstOrDefault(x => x.IdentityNumber == identityNumber);
             return creditor;
         }
 
         public Creditor UpdateCreditor(Creditor creditor)
         {
-            _context.Update(creditor);
-            _context.SaveChanges();
-            return creditor;
+            try
+            {
+                _context.Update(creditor);
+                _context.SaveChanges();
+                return creditor;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
     }
 }

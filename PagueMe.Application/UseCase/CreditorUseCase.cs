@@ -8,7 +8,7 @@ namespace PagueMe.Application.UseCase
     {
         private readonly ICreditorRepository _repository = repository;
 
-        public Creditor AddValueCreditor(float totalValue, string identityNumber)
+        public Creditor AddValueToCreditor(string identityNumber, float totalValue)
         {
             Creditor creditor = _repository.GetCreditorByIdentityNumber(identityNumber);
             creditor.Balance += totalValue;
