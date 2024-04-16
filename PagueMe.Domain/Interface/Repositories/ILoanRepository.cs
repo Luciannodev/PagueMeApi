@@ -1,6 +1,6 @@
 ﻿using PagueMe.Domain.Entities;
 
-namespace PagueMe.Domain.Repositories
+namespace PagueMe.Domain.Interface.Repositories
 {
     public interface ILoanRepository
     {

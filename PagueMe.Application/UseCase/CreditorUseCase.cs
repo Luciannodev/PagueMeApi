@@ -1,6 +1,7 @@
 ﻿using PagueMe.Application.Interfaces;
 using PagueMe.Domain.Entities;
-using PagueMe.Domain.Repositories;
+using PagueMe.Domain.Interface.Repositories;
+using PagueMe.Infra.ExternalServices.Security;
 
 namespace PagueMe.Application.UseCase
 {
@@ -18,6 +19,7 @@ namespace PagueMe.Application.UseCase
 
         public Creditor CreateCreditor(Creditor request)
         {
+            request.Password = HashHelper.EncryptPassword(request.Password);
             return _repository.CreateCreditor(request);
         }
 

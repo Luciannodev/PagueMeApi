@@ -5,8 +5,9 @@ using PagueMe.Application.Interfaces;
 using PagueMe.Application.UseCase;
 using PagueMe.DataProvider.Context;
 using PagueMe.DataProvider.Repositories;
-using PagueMe.Domain.Repositories;
-
+using PagueMe.Domain.Interface.Repositories;
+using PagueMe.Domain.Interface.Security;
+using PagueMe.Infra.ExternalServices.Security;
 
 namespace PagueMe.Ioc
 {
@@ -21,9 +22,11 @@ namespace PagueMe.Ioc
             //repository
             services.AddScoped<ICreditorRepository, CreditorRepository>();
             services.AddScoped<ILoanRepository, LoanRepository>();
+            services.AddScoped<IAccount, Account>();
             //usecase
             services.AddScoped<ICreditorUseCase, CreditorUseCase>();
             services.AddScoped<ILoanUseCase, LoanUseCase>();
+            services.AddScoped<IAccountUseCase, AccountUseCase>();
 
 
 
