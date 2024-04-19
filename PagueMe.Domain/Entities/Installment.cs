@@ -8,6 +8,7 @@
         public DateTime DueDate { get; set; }
         public int PaymentStatus { get; set; }
         public Loan Loan { get; set; }
+        public float Interest { get; set; } 
 
 
     }

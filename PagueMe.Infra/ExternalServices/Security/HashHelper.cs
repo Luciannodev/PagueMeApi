@@ -3,7 +3,7 @@ using System.Text;
 
 namespace PagueMe.Infra.ExternalServices.Security;
 
-public class HashHelper
+public static class HashHelper
 {
     private static HashAlgorithm _algoritmo = SHA256.Create();
 

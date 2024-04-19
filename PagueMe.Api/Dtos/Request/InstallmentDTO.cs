@@ -10,6 +10,8 @@ namespace PagueMe.Api.Dtos.Request
         public required string DueDate { get; set; }
         [JsonPropertyName("valor")]
         public float Value { get; set; }
+        [JsonPropertyName("juros")]
+        public float Interest { get; set; }
         public int PaymentStatus { get; set; } = 1;
     }
 }

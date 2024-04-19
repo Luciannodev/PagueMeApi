@@ -22,7 +22,7 @@ namespace PagueMe.Infra.ExternalServices.Security
         {
             Creditor creditor = _repository.GetCreditorByIdentityNumber(GetIdentityNumber());
             bool v = HashHelper.CheckPassword(password, creditor.Password);
-            throw new NotImplementedException();
+            return v;
         }
 
         public string GetIdentityNumber()

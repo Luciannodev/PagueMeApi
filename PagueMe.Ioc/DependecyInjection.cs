@@ -30,6 +30,7 @@ namespace PagueMe.Ioc
 
 
 
+
             return services;
         }
     }

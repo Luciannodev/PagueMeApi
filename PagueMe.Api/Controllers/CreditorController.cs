@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PagueMe.Api.Dtos.Request;
 using PagueMe.Api.Mapper;
 using PagueMe.Application.Interfaces;
@@ -8,16 +7,14 @@ using PagueMe.Domain.Entities;
 namespace PagueMe.Api.Controllers
 {
     [ApiController]
-    public class CreditorController: ControllerBase
+    public class CreditorController : ControllerBase
     {
 
-        private readonly ICreditorUseCase _CreditorUsecase ;
-        private readonly DtoToEntityHelper _DtoToEntityHelper ;
+        private readonly ICreditorUseCase _CreditorUsecase;
 
-        public CreditorController(ICreditorUseCase creditorUsecase,IMapper mapper)
+        public CreditorController(ICreditorUseCase creditorUsecase)
         {
             _CreditorUsecase = creditorUsecase;
-            _DtoToEntityHelper = new DtoToEntityHelper(mapper);
         }
 
         [HttpPost("register")]
@@ -25,7 +22,7 @@ namespace PagueMe.Api.Controllers
         {
             try
             {
-                Creditor creditorEntity = _DtoToEntityHelper.DtoToEntity(creditorRequestDTO);
+                Creditor creditorEntity = DtoToEntityHelper.DtoToEntity(creditorRequestDTO);
                 _CreditorUsecase.CreateCreditor(creditorEntity);
                 return Content("Seu Cadastro foi Realizado Com Sucesso");
             }
