@@ -1,0 +1,371 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2024-04-20T17:05:56.846Z",
+  "__export_source": "insomnia.desktop.app:v8.6.1",
+  "resources": [
+    {
+      "_id": "req_51bd51a915984ec58efc64d5332982ae",
+      "parentId": "wrk_5a227d4059444686af53bd55f11d344a",
+      "modified": 1713632254224,
+      "created": 1712014805955,
+      "url": "http://localhost:5000/register",
+      "name": "Cadastro de Cliente",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"nome\": \"jose luciano xavier junior\",\n\t\"cpf\": \"13731581744\",\n\t\"senha\": \"lembrei12\",\n\t\"email\": \"joseluciano.dev@gmail.com\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "User-Agent",
+          "value": "insomnia/8.6.1"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1712014805955,
+      "isPrivate": false,
+      "pathParameters": [],
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "wrk_5a227d4059444686af53bd55f11d344a",
+      "parentId": null,
+      "modified": 1712014799875,
+      "created": 1712014799875,
+      "name": "PagueMe - API",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_f8b4afcd15e14aa08c7290c1303d2184",
+      "parentId": "wrk_5a227d4059444686af53bd55f11d344a",
+      "modified": 1713632232802,
+      "created": 1712483308603,
+      "url": "http://localhost:5000/register-loan",
+      "name": "Cadastrar Divida",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n    \"nome\": \"jose luciano xavier junior\",\n    \"data_prevista_pagamento\": \"30/07/2024\",\n    \"valor_emprestimo\": 20000,\n    \"parcelamento\": [\n        {\n            \"ordem_pagamento\": 1,\n            \"data_vencimento\": \"30/04/2024\",\n            \"valor\": 5000\n        },\n        {\n            \"ordem_pagamento\": 2,\n            \"data_vencimento\": \"30/05/2024\",\n            \"valor\": 5000\n        },\n        {\n            \"ordem_pagamento\": 3,\n            \"data_vencimento\": \"30/06/2024\",\n            \"valor\": 5000\n        },\n        {\n            \"ordem_pagamento\": 4,\n            \"data_vencimento\": \"30/07/2024\",\n            \"valor\": 5000\n        }\n    ],\n    \"juros\": 10.0,\n    \"valor_total\": 2200\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_04604f63037241f1a9bc0b5c4834b03a"
+        },
+        {
+          "name": "User-Agent",
+          "value": "insomnia/8.6.1",
+          "id": "pair_30f192b6eac54116b11257b544610d82"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcGYiOiIxMzczMTU4MTc0NCIsIm5hbWUiOiJKb3NlIEx1Y2lhbm8gWGF2aWVyIEp1bmlvciIsImlhdCI6MTUxNjIzOTAyMn0.s4J6EU-aN5vz4geFyNr-320wxzueUmShIpZl3p169jc",
+          "id": "pair_dddda4e4b2374fbd99620f233a4aa2e6"
+        },
+        {
+          "name": "User-Agent",
+          "value": "insomnia/8.6.1",
+          "id": "pair_8d7f6502e57c4121aec5a1f643d2a82a"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1712483308603,
+      "isPrivate": false,
+      "pathParameters": [],
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cd388518901f4a7a8c5b59734a155d43",
+      "parentId": "wrk_5a227d4059444686af53bd55f11d344a",
+      "modified": 1713632278535,
+      "created": 1713262504067,
+      "url": "http://localhost:5000/check-password",
+      "name": "valida password",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "id": "pair_c554638a53b64125803d58344f36be00",
+          "name": "Password",
+          "value": "lembrei12",
+          "description": ""
+        }
+      ],
+      "headers": [
+        {
+          "name": "User-Agent",
+          "value": "insomnia/8.6.1",
+          "id": "pair_15021507f1244b159f4243acba9971e6"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcGYiOiIxMzczMTU4MTc0NCIsIm5hbWUiOiJKb3NlIEx1Y2lhbm8gWGF2aWVyIEp1bmlvciIsImlhdCI6MTUxNjIzOTAyMn0.s4J6EU-aN5vz4geFyNr-320wxzueUmShIpZl3p169jc",
+          "id": "pair_8b4de541e02b497788068a51b447274f"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1713262504067,
+      "isPrivate": false,
+      "pathParameters": [],
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_f8b108311322487f98f6859c887a9470",
+      "parentId": "wrk_b9af6e43225d4c59971d65a5afc713bd",
+      "modified": 1707572050433,
+      "created": 1707571505657,
+      "url": "https://9tr55vabd0.execute-api.ap-south-1.amazonaws.com/dev/bucket/foto1 (1).jpeg",
+      "name": "upar foto",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/octet-stream",
+        "fileName": "C:\\Users\\josel\\Downloads\\foto1 (1).jpeg"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "image/jpeg"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1707571505658,
+      "isPrivate": false,
+      "pathParameters": [],
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "wrk_b9af6e43225d4c59971d65a5afc713bd",
+      "parentId": null,
+      "modified": 1707571382454,
+      "created": 1707571382454,
+      "name": "Curso ApiGTW",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_c6445a1b4aa5422488fbccae0ec09349",
+      "parentId": "wrk_b9af6e43225d4c59971d65a5afc713bd",
+      "modified": 1707594019064,
+      "created": 1707572125871,
+      "url": "https://9tr55vabd0.execute-api.ap-south-1.amazonaws.com/dev/bucket/teste_arquivo_02",
+      "name": "Delete",
+      "description": "",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1707572125871,
+      "isPrivate": false,
+      "pathParameters": [],
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_ab62a02eefcb412daa4e1c234ca9ece7",
+      "parentId": "wrk_aa1a0dfb8d1d4e1a932373e83ff39dec",
+      "modified": 1703858036235,
+      "created": 1703857993017,
+      "url": "http://localhost:8080",
+      "name": "GetGames",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "User-Agent",
+          "value": "insomnia/8.5.1"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1703857993017,
+      "isPrivate": false,
+      "pathParameters": [],
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "wrk_aa1a0dfb8d1d4e1a932373e83ff39dec",
+      "parentId": null,
+      "modified": 1703857987373,
+      "created": 1703857987373,
+      "name": "GameRandonizador",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_54b2c26e6130471da1ace5917012a49d",
+      "parentId": "wrk_aa1a0dfb8d1d4e1a932373e83ff39dec",
+      "modified": 1704111733493,
+      "created": 1703859260836,
+      "url": "https://store.steampowered.com/api/appdetails?appids=396710",
+      "name": "New Request",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "User-Agent",
+          "value": "insomnia/8.5.1"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1703859260836,
+      "isPrivate": false,
+      "pathParameters": [],
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "env_4d4ec68fc88318b5087bda0d48195ba62c34b8ae",
+      "parentId": "wrk_5a227d4059444686af53bd55f11d344a",
+      "modified": 1712014799876,
+      "created": 1712014799876,
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": null,
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1712014799876,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_4d4ec68fc88318b5087bda0d48195ba62c34b8ae",
+      "parentId": "wrk_5a227d4059444686af53bd55f11d344a",
+      "modified": 1712014799878,
+      "created": 1712014799878,
+      "name": "Default Jar",
+      "cookies": [],
+      "_type": "cookie_jar"
+    },
+    {
+      "_id": "env_a7632508db514f9ef41944c48428a469ef0f14f0",
+      "parentId": "wrk_b9af6e43225d4c59971d65a5afc713bd",
+      "modified": 1707571382457,
+      "created": 1707571382457,
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": null,
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1707571382457,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_a7632508db514f9ef41944c48428a469ef0f14f0",
+      "parentId": "wrk_b9af6e43225d4c59971d65a5afc713bd",
+      "modified": 1707571382459,
+      "created": 1707571382459,
+      "name": "Default Jar",
+      "cookies": [],
+      "_type": "cookie_jar"
+    },
+    {
+      "_id": "env_42f4357f0db4e76956ed946f02c49d51c5f68bcc",
+      "parentId": "wrk_aa1a0dfb8d1d4e1a932373e83ff39dec",
+      "modified": 1703857987377,
+      "created": 1703857987377,
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": null,
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1703857987377,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_42f4357f0db4e76956ed946f02c49d51c5f68bcc",
+      "parentId": "wrk_aa1a0dfb8d1d4e1a932373e83ff39dec",
+      "modified": 1704111734640,
+      "created": 1703857987381,
+      "name": "Default Jar",
+      "cookies": [
+        {
+          "key": "steamCountry",
+          "value": "BR%7C4ed7e931f3e357d924a96708b96d5a68",
+          "domain": "store.steampowered.com",
+          "path": "/",
+          "secure": true,
+          "httpOnly": true,
+          "hostOnly": true,
+          "creation": "2024-01-01T12:22:14.637Z",
+          "lastAccessed": "2024-01-01T12:22:14.637Z",
+          "sameSite": "none",
+          "id": "a7f3411f-d68a-4d56-a517-c2be62cd5ca0"
+        },
+        {
+          "key": "browserid",
+          "value": "3261233916205162161",
+          "expires": "2024-12-31T12:22:14.000Z",
+          "domain": "store.steampowered.com",
+          "path": "/",
+          "secure": true,
+          "hostOnly": true,
+          "creation": "2024-01-01T12:22:14.639Z",
+          "lastAccessed": "2024-01-01T12:22:14.639Z",
+          "sameSite": "none",
+          "id": "3c8e5fd0-933d-4b05-a154-0a6b28bb9f21"
+        }
+      ],
+      "_type": "cookie_jar"
+    }
+  ]
+}

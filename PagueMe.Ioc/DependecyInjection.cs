@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PagueMe.Application.Interfaces;
 using PagueMe.Application.UseCase;
+using PagueMe.DataProvider.Config;
 using PagueMe.DataProvider.Context;
 using PagueMe.DataProvider.Repositories;
 using PagueMe.Domain.Interface.Repositories;
@@ -13,12 +13,13 @@ namespace PagueMe.Ioc
 {
     public static class DependecyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services,IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services,IConfigurationRoot configuration)
         {
-            //mysql
-            String? ConnectionString = configuration.GetConnectionString("MysqlConnection");
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(ConnectionString, ServerVersion.AutoDetect(ConnectionString)));
+            //mysql
+
+            Console.WriteLine(configuration.GetDebugView());
+            services.AddDbContext<ApplicationDbContext>();
             //repository
             services.AddScoped<ICreditorRepository, CreditorRepository>();
             services.AddScoped<ILoanRepository, LoanRepository>();
@@ -28,6 +29,10 @@ namespace PagueMe.Ioc
             services.AddScoped<ILoanUseCase, LoanUseCase>();
             services.AddScoped<IAccountUseCase, AccountUseCase>();
 
+            //services.Configure<DataBaseSettings>(configuration.GetSection("DataBaseSettings"));
+            services.AddOptions<DataBaseSettings>()
+                .BindConfiguration("Database")
+                .Bind(configuration);
 
 
 
