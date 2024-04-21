@@ -2,11 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using PagueMe.Application.Interfaces;
 using PagueMe.Application.UseCase;
-using PagueMe.DataProvider.Config;
 using PagueMe.DataProvider.Context;
 using PagueMe.DataProvider.Repositories;
 using PagueMe.Domain.Interface.Repositories;
 using PagueMe.Domain.Interface.Security;
+using PagueMe.Infra.Config;
 using PagueMe.Infra.ExternalServices.Security;
 
 namespace PagueMe.Ioc
@@ -28,8 +28,8 @@ namespace PagueMe.Ioc
             services.AddScoped<IAccountUseCase, AccountUseCase>();
 
             //configuration environment
-            services.AddOptions<DataBaseSettings>()
-                .BindConfiguration("DataBaseSettings")
+            services.AddOptions<ClientSettings>()
+                .BindConfiguration("ClientSettings")
                 .Bind(configuration);
 
 

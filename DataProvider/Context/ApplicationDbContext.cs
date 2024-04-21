@@ -1,15 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using PagueMe.DataProvider.Config;
 using PagueMe.Domain.Entities;
+using PagueMe.Infra.Config;
 
 namespace PagueMe.DataProvider.Context
 {
-    public class ApplicationDbContext(DbContextOptions options, IOptions<DataBaseSettings> settings)
+    public class ApplicationDbContext(DbContextOptions options, IOptions<ClientSettings> settings)
         : DbContext(options)
     {
-        public DataBaseSettings _settings = settings.Value;
+        public ClientSettings _settings = settings.Value;
         public DbSet<Creditor> Creditor { get; set; }
         public DbSet<Debtor> Debtor { get; set; }
         public DbSet<Installment> Installment { get; set; }
@@ -35,7 +34,7 @@ namespace PagueMe.DataProvider.Context
             var server = _settings.Database.Server;
             var database = _settings.Database.Name;
             var user = _settings.Database.User;
-            var password = _settings.Database.Password ;
+            var password = _settings.Database.Password;
             var port = _settings.Database.Port;
             return $"server={server};database={database};user={user};password={password};port={port}";
         }

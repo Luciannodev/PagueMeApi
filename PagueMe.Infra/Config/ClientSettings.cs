@@ -1,7 +1,8 @@
-﻿namespace PagueMe.DataProvider.Config
+﻿namespace PagueMe.Infra.Config
 {
-    public class DataBaseSettings
+    public class ClientSettings
     {
+        public string SecretKey { get; set; }
         public Database Database { get; set; }
     }
 
