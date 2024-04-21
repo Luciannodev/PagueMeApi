@@ -4,7 +4,7 @@
     {
         public int DebtorId { get; set; }
         public string Name { get; set; }
-        public string IdentityNumber { get; set; }
+        public string ?IdentityNumber { get; set; }
         public List<Loan> Loans { get; set; }
     }
 

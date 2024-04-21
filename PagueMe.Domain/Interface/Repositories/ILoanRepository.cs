@@ -12,6 +12,6 @@ namespace PagueMe.Domain.Interface.Repositories
         public Loan GetLoanByCreditor(string name);
 
         public Loan GetLoanByDate(string date);
-
+        List<Loan> GetListLoanByCreditor(string v);
     }
 }

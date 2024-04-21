@@ -8,5 +8,7 @@ namespace PagueMe.Application.Interfaces
 
         public Loan LoanPayment(Loan request);
 
+        public List<Loan> ListLoan();
+
     }
 }

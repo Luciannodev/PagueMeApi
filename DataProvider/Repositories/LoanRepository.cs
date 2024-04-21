@@ -1,4 +1,5 @@
-﻿using PagueMe.DataProvider.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using PagueMe.DataProvider.Context;
 using PagueMe.Domain.Entities;
 using PagueMe.Domain.Interface.Repositories;
 
@@ -10,7 +11,8 @@ namespace PagueMe.DataProvider.Repositories
 
         public LoanRepository(ApplicationDbContext context)
         {
-            _context = context;
+            _context = context
+;
         }
 
         public Loan CreateLoan(Loan loan)
@@ -26,6 +28,12 @@ namespace PagueMe.DataProvider.Repositories
                 throw new Exception(e.Message);
             }
 
+        }
+
+        public List<Loan> GetListLoanByCreditor(string v)
+        {
+            List<Loan> loans = _context.Loan.Where(x => x.Creditor.IdentityNumber == v).Include(d=>d.Debtor).ToList();
+            return loans;
         }
 
         public Loan GetLoanByCreditor(string name)

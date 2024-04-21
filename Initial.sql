@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS installment (
 	due_date datetime NOT NULL,
 	status_payment int NOT NULL,
 	interest float NOT NULL,
-	PRIMARY KEY (installment_order)
+	PRIMARY KEY (installment_order,loan_id)
 );
 
 

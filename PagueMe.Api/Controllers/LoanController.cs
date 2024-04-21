@@ -29,8 +29,13 @@ namespace PagueMe.Api.Controllers
             return new ActionResult<LoanResponseDTO>(loanResponse);
         }
 
+        [HttpGet("list_loan")]
+        public ActionResult<List<LoanResponseDTO>> ListLoan()
+        {
+            List<Loan> listLoan = _IloanUseCase.ListLoan();
+            List<LoanResponseDTO> listLoanResponse = listLoan.Select(loan => DtoToEntityHelper.EntityToDto(loan)).ToList();
+            return new ActionResult<List<LoanResponseDTO>>(listLoanResponse);
 
-
-
+        }
     }
 }

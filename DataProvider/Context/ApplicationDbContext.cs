@@ -25,7 +25,7 @@ namespace PagueMe.DataProvider.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connectionString = ConnectionStringBuilder();
-            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)) ;
         }
 
         public string ConnectionStringBuilder()

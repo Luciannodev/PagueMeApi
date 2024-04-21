@@ -34,9 +34,17 @@ namespace PagueMe.Application.UseCase
 
         }
 
+        public List<Loan> ListLoan()
+        {
+            List<Loan> loanList = _loanRepository.GetListLoanByCreditor(_account.GetIdentityNumber());
+            return loanList;
+        }
+
         public Loan LoanPayment(Loan request)
         {
             throw new NotImplementedException();
         }
+
+
     }
 }
