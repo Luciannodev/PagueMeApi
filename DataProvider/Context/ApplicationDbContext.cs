@@ -6,10 +6,9 @@ using PagueMe.Domain.Entities;
 
 namespace PagueMe.DataProvider.Context
 {
-    public class ApplicationDbContext(DbContextOptions options, IOptions<DataBaseSettings> settings,IConfiguration configuration)
+    public class ApplicationDbContext(DbContextOptions options, IOptions<DataBaseSettings> settings)
         : DbContext(options)
     {
-        public IConfiguration _configuration = configuration;
         public DataBaseSettings _settings = settings.Value;
         public DbSet<Creditor> Creditor { get; set; }
         public DbSet<Debtor> Debtor { get; set; }
@@ -33,13 +32,11 @@ namespace PagueMe.DataProvider.Context
         public string ConnectionStringBuilder()
         {
 
-
-            var server = _configuration["DataBaseSettings:Database:Server"];
-            var database = _configuration["DataBaseSettings:Database:Name"];
-            var user = _configuration["DataBaseSettings:Database:User"];
-            var password = _configuration["DataBaseSettings:Database:password"];
-            var port = _configuration["DataBaseSettings:Database:port"];
-
+            var server = _settings.Database.Server;
+            var database = _settings.Database.Name;
+            var user = _settings.Database.User;
+            var password = _settings.Database.Password ;
+            var port = _settings.Database.Port;
             return $"server={server};database={database};user={user};password={password};port={port}";
         }
     }

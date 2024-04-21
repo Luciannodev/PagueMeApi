@@ -16,9 +16,7 @@ namespace PagueMe.Ioc
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,IConfigurationRoot configuration)
         {
 
-            //mysql
-
-            Console.WriteLine(configuration.GetDebugView());
+            //database
             services.AddDbContext<ApplicationDbContext>();
             //repository
             services.AddScoped<ICreditorRepository, CreditorRepository>();
@@ -29,9 +27,9 @@ namespace PagueMe.Ioc
             services.AddScoped<ILoanUseCase, LoanUseCase>();
             services.AddScoped<IAccountUseCase, AccountUseCase>();
 
-            //services.Configure<DataBaseSettings>(configuration.GetSection("DataBaseSettings"));
+            //configuration environment
             services.AddOptions<DataBaseSettings>()
-                .BindConfiguration("Database")
+                .BindConfiguration("DataBaseSettings")
                 .Bind(configuration);
 
 
