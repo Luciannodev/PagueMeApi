@@ -16,8 +16,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddTransient<DataSeeder>();
-builder.Services.AddControllers().AddFluentValidation(config =>
-    config.RegisterValidatorsFromAssembly(typeof(Program).Assembly));
+builder.Services.AddControllers()
+    .AddFluentValidation(config => config.RegisterValidatorsFromAssembly(typeof(Program).Assembly))
+    .AddJsonOptions(configure: options => { options.JsonSerializerOptions.IgnoreNullValues = true; });
 builder.Services.AddTransient<IValidator<CreditorRequestDTO>, CreditorValidator>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen();

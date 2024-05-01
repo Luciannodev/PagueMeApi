@@ -2,6 +2,7 @@
 using PagueMe.DataProvider.Context;
 using PagueMe.Domain.Entities;
 using PagueMe.Domain.Interface.Repositories;
+using PagueMe.Domain.Querys;
 
 namespace PagueMe.DataProvider.Repositories
 {
@@ -30,15 +31,63 @@ namespace PagueMe.DataProvider.Repositories
 
         }
 
-        public List<Loan> GetListLoanByCreditor(string v)
+        public List<Loan> GetListLoanByCreditor(string identifyNumber)
         {
-            List<Loan> loans = _context.Loan.Where(x => x.Creditor.IdentityNumber == v).Include(d=>d.Debtor).ToList();
+            List<Loan> loans = _context.Loan.Where(x => x.Creditor.IdentityNumber == identifyNumber).Include(d => d.Debtor).ToList();
             return loans;
         }
 
-        public Loan GetLoanByCreditor(string name)
+
+        public Loan UpdateLoan(Loan dto)
         {
-            throw new NotImplementedException();
+            var loan = GetLoanById(dto.LoanId);
+            UpdateFromDto(dto, loan);
+            _context.Update(loan);
+            _context.SaveChanges();
+            return loan;
+        }
+
+        private void UpdateFromDto(Loan LoanDto, Loan loan)
+        {
+            if (LoanDto.Debtor.Name != null)
+            {
+                loan.Debtor.Name = LoanDto.Debtor.Name;
+            }
+
+            if (LoanDto.DueDate != null)
+            {
+                loan.DueDate = LoanDto.DueDate;
+            }
+
+            if (LoanDto.LoanValue != 0)
+            {
+                loan.LoanValue = LoanDto.LoanValue;
+            }
+
+            if (LoanDto.Interest != 0)
+            {
+                loan.Interest = LoanDto.Interest;
+            }
+
+            if (LoanDto.TotalValue != 0)
+            {
+                loan.TotalValue = LoanDto.TotalValue;
+            }
+        }
+
+        public Loan GetLoanById(int id)
+        {
+            try
+            {
+                Loan? loan = _context.Loan
+                    .Include(l => l.Debtor)
+                    .SingleOrDefault(l => l.LoanId == id);
+                return loan ?? throw new Exception("Loan not found");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public Loan GetLoanByDate(string date)
@@ -46,19 +95,46 @@ namespace PagueMe.DataProvider.Repositories
             throw new NotImplementedException();
         }
 
-        public Loan GetLoanByName(string name)
+        public List<Loan> GetListLoan(ListLoanQuery listLoanQuery)
         {
-            throw new NotImplementedException();
+            IQueryable<Loan> queryable = _context.Loan
+                                             .Include(l => l.Debtor);
+            queryable = BuildQuery(listLoanQuery, queryable);
+            return queryable.ToList();
         }
 
-        public Loan GetLoanByStatusPayment(string name)
+        private static IQueryable<Loan> BuildQuery(ListLoanQuery listLoanQuery, IQueryable<Loan> queryable)
         {
-            throw new NotImplementedException();
-        }
+            if (listLoanQuery.LoanId != null)
+            {
+                queryable = queryable.Where(x => x.LoanId == listLoanQuery.LoanId);
+            }
 
-        public Loan UpdateLoan(Loan loan)
-        {
-            throw new NotImplementedException();
+            if (listLoanQuery.TotalValue != null)
+            {
+                queryable = queryable.Where(x => x.TotalValue <= listLoanQuery.TotalValue);
+            }
+
+            if (listLoanQuery.LoanValue != null)
+            {
+                queryable = queryable.Where(x => x.LoanValue <= listLoanQuery.LoanValue);
+            }
+
+            if (listLoanQuery.PaymentStatus != null)
+            {
+                queryable = queryable.Where(x => x.PaymentStatus == listLoanQuery.PaymentStatus);
+            }
+
+            if (listLoanQuery.IdentifyNumber != null)
+            {
+                queryable = queryable.Where(x => x.Creditor.IdentityNumber == listLoanQuery.IdentifyNumber);
+            }
+            if (listLoanQuery.DueDate != null)
+            {
+                queryable = queryable.Where(x => x.DueDate == Convert.ToDateTime(listLoanQuery.DueDate));
+            }
+
+            return queryable;
         }
     }
 }

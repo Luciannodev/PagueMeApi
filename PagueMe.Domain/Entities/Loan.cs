@@ -10,15 +10,15 @@
         public DateTime DueDate { get; set; }
         public DateTime RegistrationDate { get; set; }
 
-        public  Creditor Creditor { get; set; }
+        public  Creditor ?Creditor { get; set; }
 
-        public  Debtor Debtor { get; set; }
+        public  Debtor ?Debtor { get; set; }
 
         public float Interest {  get; set; }
 
         public float LoanValue {  get; set; }
 
-        public  List<Installment> Installment { get; set; }
+        public  List<Installment> ?Installment { get; set; }
 
     }
 }

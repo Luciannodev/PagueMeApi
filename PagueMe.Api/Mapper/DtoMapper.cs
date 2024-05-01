@@ -10,19 +10,41 @@ namespace PagueMe.Api.Mapper
     {
         public DtoMapper()
         {
+            RequestsMappers();
+            ResponseMappers();
+        }
+
+        private void RequestsMappers()
+        {
             CreateMap<CreditorRequestDTO, Creditor>().ReverseMap();
-            CreateMap<LoanRequestDTO, Loan>().
+
+            CreateMap<LoanRegisterRequestDTO, Loan>().
             ForMember(destinationMember: x => x.DueDate,
-                    memberOptions: opt => opt.MapFrom(x => DateTime.Parse(x.DueDate, new CultureInfo("pt-BR")))).
-                ReverseMap();
+                    memberOptions: opt => opt.MapFrom(x => DateTime.Parse(x.DueDate, new CultureInfo("pt-BR"))))
+                .ReverseMap();
+
+            CreateMap<LoanUpdateRequestDTO, Loan>()
+                .ForMember(dest => dest.DueDate, opt => opt.MapFrom(src => DateTime.Parse(src.DueDate, new CultureInfo("pt-BR"))))
+                .ForPath(dest => dest.Debtor.Name, opt => opt.MapFrom(src => src.name))
+                .ReverseMap();
+
             CreateMap<InstallmentDTO, Installment>()
                 .ReverseMap();
 
+            CreateMap<GetLoanQuery, Loan>()
+                .ReverseMap();
+        }
+
+        private void ResponseMappers()
+        {
             CreateMap<LoanResponseDTO, Loan>()
                 .ForPath(dest => dest.Debtor.Name, opt => opt.MapFrom(src => src.Name))
                 .ReverseMap();
-            CreateMap<InstallmentResponseDTO,Installment>()
+
+            CreateMap<InstallmentResponseDTO, Installment>()
                 .ReverseMap();
         }
+
+
     }
 }

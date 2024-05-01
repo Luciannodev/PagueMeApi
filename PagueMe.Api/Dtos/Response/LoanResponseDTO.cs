@@ -1,10 +1,11 @@
 ﻿using System.Text.Json.Serialization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PagueMe.Api.Dtos.Response
 {
     public class LoanResponseDTO
     {
+        [JsonPropertyName("id")]
+        public int LoanId { get; set; }
         [JsonPropertyName("cliente")]
         public string Name { get; set; }
         [JsonPropertyName("data_prevista_pagamento")]

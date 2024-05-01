@@ -22,13 +22,13 @@ namespace PagueMe.Api.Controllers
         {
             try
             {
-                Creditor creditorEntity = DtoToEntityHelper.DtoToEntity(creditorRequestDTO);
+                Creditor creditorEntity = DtoToEntityHelper.CreditorDtoToEntity(creditorRequestDTO);
                 _CreditorUsecase.CreateCreditor(creditorEntity);
                 return Content("Seu Cadastro foi Realizado Com Sucesso");
             }
             catch (Exception ex)
             {
-                throw new Exception($"Não foi possivel Cadastrar o Usuario{ex}");
+                throw new Exception($"Não foi possivel Cadastrar o Usuario.{ex}");
             }
 
         }
