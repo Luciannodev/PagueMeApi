@@ -90,10 +90,6 @@ namespace PagueMe.DataProvider.Repositories
             }
         }
 
-        public Loan GetLoanByDate(string date)
-        {
-            throw new NotImplementedException();
-        }
 
         public List<Loan> GetListLoan(ListLoanQuery listLoanQuery)
         {
@@ -125,13 +121,17 @@ namespace PagueMe.DataProvider.Repositories
                 queryable = queryable.Where(x => x.PaymentStatus == listLoanQuery.PaymentStatus);
             }
 
-            if (listLoanQuery.IdentifyNumber != null)
+            if (listLoanQuery.CreditorIdentifyNumber != null)
             {
-                queryable = queryable.Where(x => x.Creditor.IdentityNumber == listLoanQuery.IdentifyNumber);
+                queryable = queryable.Where(x => x.Creditor.IdentityNumber == listLoanQuery.CreditorIdentifyNumber);
             }
             if (listLoanQuery.DueDate != null)
             {
                 queryable = queryable.Where(x => x.DueDate == Convert.ToDateTime(listLoanQuery.DueDate));
+            }
+            if(listLoanQuery.DebtorIdentifyNumber != null)
+            {
+                queryable = queryable.Where(x => x.Debtor.IdentityNumber == listLoanQuery.DebtorIdentifyNumber);
             }
 
             return queryable;

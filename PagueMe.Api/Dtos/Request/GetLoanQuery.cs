@@ -7,14 +7,16 @@ namespace PagueMe.Api.Dtos.Request
         [FromQuery(Name = "loan_id")]
         public int? LoanId { get; set; }
         [FromQuery(Name = "valor_total")]
-        public float ?TotalValue { get; set; }
+        public float? TotalValue { get; set; }
         [FromQuery(Name = "valor_emprestimo")]
-        public float ?LoanValue { get; set; }
+        public float? LoanValue { get; set; }
         [FromQuery(Name = "status_pagamento")]
-        public int ?PaymentStatus { get; set; }
-        [FromQuery(Name = "cpf")]
-        public string ?IdentifyNumber { get; set; }
+        public int? PaymentStatus { get; set; }
+        [FromQuery(Name = "cpf_credor")]
+        public string? CredidorIdentifyNumber { get; set; }
+        [FromQuery(Name = "cpf_devedor")]
+        public string? DebtorIdentifyNumber { get; set; }
         [FromQuery(Name = "data_vencimento")]
-        public string ?DueDate { get; set; }
+        public string? DueDate { get; set; }
     }
 }

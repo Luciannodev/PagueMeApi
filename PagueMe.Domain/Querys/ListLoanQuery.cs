@@ -6,7 +6,8 @@
         public float? TotalValue { get; set; }
         public float? LoanValue { get; set; }
         public int? PaymentStatus { get; set; }
-        public string? IdentifyNumber { get; set; }
         public string? DueDate { get; set; }
+        public string? CreditorIdentifyNumber { get; set; }
+        public string? DebtorIdentifyNumber { get; set; }
     }
 }

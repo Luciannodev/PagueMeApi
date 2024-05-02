@@ -53,8 +53,9 @@ namespace PagueMe.Api.Mapper
                 TotalValue = getLoanQuery.TotalValue,
                 LoanValue = getLoanQuery.LoanValue,
                 PaymentStatus = getLoanQuery.PaymentStatus,
-                IdentifyNumber = getLoanQuery.IdentifyNumber,
-                DueDate = getLoanQuery.DueDate
+                DueDate = getLoanQuery.DueDate,
+                CreditorIdentifyNumber = getLoanQuery.DebtorIdentifyNumber,
+                DebtorIdentifyNumber = getLoanQuery.DebtorIdentifyNumber
             };
         }
     }
