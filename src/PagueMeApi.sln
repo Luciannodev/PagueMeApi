@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagueMe.Api", "PagueMe.Api\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagueMe.Ioc", "PagueMe.Ioc\PagueMe.Ioc.csproj", "{603C56E9-B6CE-475F-9FA2-3F54B378F0AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagueMe.DataProvider", "DataProvider\PagueMe.DataProvider.csproj", "{F9C84086-6E13-4AA0-9BB6-7A2CEE15C0A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagueMe.DataProvider", "PagueMe.DataProvider\PagueMe.DataProvider.csproj", "{CA0220F6-9497-4BDD-989E-29DCD93145A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{603C56E9-B6CE-475F-9FA2-3F54B378F0AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{603C56E9-B6CE-475F-9FA2-3F54B378F0AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{603C56E9-B6CE-475F-9FA2-3F54B378F0AF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9C84086-6E13-4AA0-9BB6-7A2CEE15C0A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9C84086-6E13-4AA0-9BB6-7A2CEE15C0A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9C84086-6E13-4AA0-9BB6-7A2CEE15C0A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9C84086-6E13-4AA0-9BB6-7A2CEE15C0A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA0220F6-9497-4BDD-989E-29DCD93145A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA0220F6-9497-4BDD-989E-29DCD93145A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA0220F6-9497-4BDD-989E-29DCD93145A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA0220F6-9497-4BDD-989E-29DCD93145A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataProvider\PagueMe.DataProvider.csproj" />
     <ProjectReference Include="..\PagueMe.Application\PagueMe.Application.csproj" />
+    <ProjectReference Include="..\PagueMe.DataProvider\PagueMe.DataProvider.csproj" />
     <ProjectReference Include="..\PagueMe.Domain\PagueMe.Domain.csproj" />
     <ProjectReference Include="..\PagueMe.Infra\PagueMe.Infra.csproj" />
   </ItemGroup>
