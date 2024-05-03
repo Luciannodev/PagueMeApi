@@ -24,7 +24,12 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Inicializar o Terraform
-        run: terraform init
+        run: |
+          cd infra
+          terraform init
 
       - name: Fazer o deploy da aplicação
-        run: terraform apply -auto-approve
+        run: |
+          cd infra
+          terraform init
+          terraform apply -auto-approve
