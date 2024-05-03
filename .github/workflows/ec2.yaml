@@ -2,13 +2,13 @@ name: 'Terraform CI'
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - infra/**
       - src/**
   pull_request:
     branches:
-      - main
+      - master
     paths:
       - infra/**
       - src/**
