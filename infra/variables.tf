@@ -24,3 +24,9 @@ variable "repo" {
   description = "repository of the application"
   default     = "https://github.com/Luciannodev/PagueMeApi"
 }
+
+variable "IMAGE_TAG" {
+  description = "The tag of the image to deploy."
+  default     = "latest"
+  
+}
