@@ -23,15 +23,6 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Build, tag, and push image to Amazon ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: my-ecr-repo
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           
       - name: Instalar o Terraform
         uses: hashicorp/setup-terraform@v1
@@ -40,6 +31,11 @@ jobs:
         run: |
           cd infra
           terraform init
+      - name: Fazer o deploy da aplicação
+        run: |
+          cd infra
+          terraform apply -auto-approve          
+      
       - name: Get RDS endpoint
         id: rds
         run: |
@@ -50,6 +46,16 @@ jobs:
         run: |
           cd infra
           terraform apply -auto-approve
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: my-ecr-repo
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          
       - name: Run Docker container
         run: |
           docker run -e ClientSettings__Database__Server=${{ steps.rds.outputs.endpoint }} -p 5001:8080 --name pagueme-container-1 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
