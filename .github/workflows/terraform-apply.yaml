@@ -45,7 +45,7 @@ jobs:
       - name: Fazer o deploy da aplicação
         run: |
           cd infra
-          terraform apply -auto-approve
+          terraform destroy -auto-approve
 
       - name: Build, tag, and push image to Amazon ECR
         env:
@@ -55,7 +55,7 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          
+
       - name: Run Docker container
         run: |
           docker run -e ClientSettings__Database__Server=${{ steps.rds.outputs.endpoint }} -p 5001:8080 --name pagueme-container-1 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
