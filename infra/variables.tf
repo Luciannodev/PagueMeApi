@@ -30,3 +30,15 @@ variable "IMAGE_TAG" {
   default     = "latest"
   
 }
+
+variable "db_name" {
+  default = "paguemedb"
+}
+
+variable "username" {
+  default = "root"
+}
+
+variable "password" {
+  default = "lembrei12"
+}
