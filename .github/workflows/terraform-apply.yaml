@@ -45,7 +45,7 @@ jobs:
       - name: Fazer o deploy da aplicação
         run: |
           cd infra
-          terraform destroy -auto-approve
+          terraform apply -auto-approve
 
       - name: Build, tag, and push image to Amazon ECR
         env:
