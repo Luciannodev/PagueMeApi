@@ -28,7 +28,7 @@ resource "aws_db_instance" "default" {
 
 resource "null_resource" "db_setup" {
   provisioner "local-exec" {
-    command = "mysql -h ${aws_db_instance.default.address} -u ${var.username} -p${var.password} ${var.db_name} < ./SQL/Initial.sql"
+    command = "mysql -h ${aws_db_instance.default.address} -u ${var.username} -p ${var.password} ${var.db_name} < ./SQL/Initial.sql"
   }
     triggers = {
     db_instance_address = aws_db_instance.default.address
