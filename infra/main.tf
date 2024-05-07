@@ -16,12 +16,14 @@ resource "aws_db_instance" "default" {
   storage_type         = "gp2"
   engine               = "mysql"
   engine_version       = "8.0.35"
-  instance_class       = "db.t4g.micro"
+  instance_class       = "db.t3.micro"
+  identifier           = var.db_name
   username             = var.username
   password             = var.password
   parameter_group_name = "default.mysql8.0"
   publicly_accessible  = true
   skip_final_snapshot  = true
+  backup_retention_period = 0 
 }
 
 resource "null_resource" "db_setup" {
