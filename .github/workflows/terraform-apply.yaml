@@ -40,8 +40,16 @@ jobs:
         run: |
           cd infra
           terraform init
+      - name: Get RDS endpoint
+        id: rds
+        run: |
+           cd infra
+           echo "::set-output name=endpoint::$(terraform output rds_endpoint)"
 
       - name: Fazer o deploy da aplicação
         run: |
           cd infra
           terraform apply -auto-approve
+      - name: Run Docker container
+        run: |
+          docker run -e ClientSettings__Database__Server=${{ steps.rds.outputs.endpoint }} -p 5001:8080 --name pagueme-container-1 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

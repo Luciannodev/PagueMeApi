@@ -11,6 +11,30 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+resource "aws_db_instance" "default" {
+  allocated_storage    = 20
+  storage_type         = "gp2"
+  engine               = "mysql"
+  engine_version       = "5.7"
+  instance_class       = "db.t2.micro"
+  username             = var.username
+  password             = var.password
+  parameter_group_name = "default.mysql5.7"
+  publicly_accessible  = true
+  skip_final_snapshot  = true
+}
+
+resource "null_resource" "db_setup" {
+  provisioner "local-exec" {
+    command = "mysql -h ${aws_db_instance.default.address} -u ${var.username} -p${var.password} ${var.db_name} < /path/to/infra/SQL/initial.sql"
+  }
+    triggers = {
+    db_instance_address = aws_db_instance.default.address
+  }
+  }
+  
+
+
 resource "aws_ecr_repository" "repository" {
   name = "my-ecr-repo"
 }
