@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PagueMe.DataProvider.Context;
+using PagueMe.DataProvider.Interfaces;
 using PagueMe.Domain.Entities;
 using PagueMe.Domain.Interface.Repositories;
 using PagueMe.Domain.Querys;
@@ -8,9 +9,9 @@ namespace PagueMe.DataProvider.Repositories
 {
     public class LoanRepository : ILoanRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
 
-        public LoanRepository(ApplicationDbContext context)
+        public LoanRepository(IApplicationDbContext context)
         {
             _context = context
 ;

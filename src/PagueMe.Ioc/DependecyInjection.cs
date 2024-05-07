@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PagueMe.Application.Interfaces;
 using PagueMe.Application.UseCase;
 using PagueMe.DataProvider.Context;
+using PagueMe.DataProvider.Interfaces;
 using PagueMe.DataProvider.Repositories;
 using PagueMe.Domain.Interface.Repositories;
 using PagueMe.Domain.Interface.Security;
@@ -17,7 +19,7 @@ namespace PagueMe.Ioc
         {
 
             //database
-            services.AddDbContext<ApplicationDbContext>();
+            services.AddDbContext<IApplicationDbContext, ApplicationDbContext>();
             //repository
             services.AddScoped<ICreditorRepository, CreditorRepository>();
             services.AddScoped<ILoanRepository, LoanRepository>();
@@ -26,6 +28,7 @@ namespace PagueMe.Ioc
             services.AddScoped<ICreditorUseCase, CreditorUseCase>();
             services.AddScoped<ILoanUseCase, LoanUseCase>();
             services.AddScoped<IAccountUseCase, AccountUseCase>();
+            services.AddScoped<ILogger, Logger<IApplicationDbContext>>();
 
             //configuration environment
             services.AddOptions<ClientSettings>()
