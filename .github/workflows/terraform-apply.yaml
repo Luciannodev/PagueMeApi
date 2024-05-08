@@ -63,6 +63,7 @@ jobs:
           ECR_REPOSITORY: my-ecr-repo
           IMAGE_TAG: ${{ github.sha }}
         run: |
+          echo "ECR_REGISTRY: $ECR_REGISTRY"
           docker build \
           --build-arg DB_NAME=${{ env.DB_NAME }} \
           --build-arg DB_USER=${{ env.DB_USER }} \
