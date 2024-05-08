@@ -12,13 +12,20 @@ RUN dotnet restore ./PagueMeApi.sln
 # Build and publish a release
 RUN dotnet publish -c Release -o out
 
-ENV ASPNETCORE_ENVIRONMENT=Development
-ENV SECRET_KEY=1234567890
-ENV ClientSettings__Database__Server="host.docker.internal"
-ENV ClientSettings__Database__Name="paguemedb"
-ENV ClientSettings__Database__User="root"
-ENV ClientSettings__Database__Password="lembrei12"
-ENV ClientSettings__Database__Port=3306
+ARG SECRET_KEY
+ARG SERVER
+ARG NAME
+ARG USER
+ARG PASSWORD
+ARG PORT
+
+
+
+ENV ClientSettings__Database__Server=${SERVER}
+ENV ClientSettings__Database__Name=${NAME}
+ENV ClientSettings__Database__User=${USER}
+ENV ClientSettings__Database__Password=${PASSWORD}
+ENV ClientSettings__Database__Port=${PORT}
 ENV ASPNETCORE_URLS=http://0.0.0.0:8080
 
 ENTRYPOINT ["dotnet", "out/PagueMe.Api.dll"]
