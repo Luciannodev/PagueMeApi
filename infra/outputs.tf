@@ -7,7 +7,7 @@ output "rds_endpoint" {
 
 output "db_name" {
   value = aws_db_instance.paguemedb.db_name
-    sensitive = true
+
 }
 
 output "db_user" {
