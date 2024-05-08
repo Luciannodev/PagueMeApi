@@ -40,7 +40,7 @@ jobs:
         run: |
          cd infra
          OUTPUTS=$(terraform output -json)
-         echo "OUTPUTS: $OUTPUTS"
+         echo "OUTPUTS: $OUTPUTS" | cat -v
          DB_NAME=$(echo $OUTPUTS | jq -r .db_name.value)
          echo "DB_NAME: $DB_NAME"
          DB_USER=$(echo $OUTPUTS | jq -r .db_user.value)
