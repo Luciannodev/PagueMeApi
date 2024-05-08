@@ -47,7 +47,7 @@ resource "aws_db_instance" "paguemedb" {
 resource "time_sleep" "wait" {
   depends_on = [aws_db_instance.paguemedb]
 
-  create_duration = "2m"
+  create_duration = "1m"
 }
 
 resource "null_resource" "db_setup" {
