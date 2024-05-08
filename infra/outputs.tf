@@ -15,6 +15,7 @@ output "db_user" {
 
 output "db_password" {
  value = aws_db_instance.paguemedb.password
+ sensitive = true
 }
 
 output "db_port" {
