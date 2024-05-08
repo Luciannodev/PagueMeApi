@@ -13,7 +13,7 @@ RUN dotnet restore ./PagueMeApi.sln
 RUN dotnet publish -c Release -o out
 
 ARG SECRET_KEY
-ARG SERVER
+ARG DB_HOST
 ARG NAME
 ARG USER
 ARG PASSWORD
@@ -21,7 +21,7 @@ ARG PORT
 
 
 
-ENV ClientSettings__Database__Server=${SERVER}
+ENV ClientSettings__Database__Server=${DB_HOST}
 ENV ClientSettings__Database__Name=${NAME}
 ENV ClientSettings__Database__User=${USER}
 ENV ClientSettings__Database__Password=${PASSWORD}

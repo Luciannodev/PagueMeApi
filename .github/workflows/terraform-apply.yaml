@@ -45,6 +45,7 @@ jobs:
           echo "DB_USER=$(terraform output -raw db_user)
           echo "DB_PASSWORD=$(terraform output -raw db_password)
           echo "DB_PORT=$(terraform output -raw db_port)
+          echo "DB_HOST=$(terraform output -raw db_host)
 
       - name: Get RDS endpoint
         id: rds
@@ -67,6 +68,7 @@ jobs:
           docker build \
           --build-arg DB_NAME=${{ env.DB_NAME }} \
           --build-arg DB_USER=${{ env.DB_USER }} \
+          --build-arg DB_HOST=${{ env.DB_HOST }} \
           --build-arg DB_PASSWORD=${{ env.DB_PASSWORD }} \
           --build-arg DB_PORT=${{ env.DB_PORT }} \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .

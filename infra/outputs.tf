@@ -23,3 +23,13 @@ output "db_password" {
 output "db_port" {
  value = aws_db_instance.paguemedb.port
 }
+
+output "ecr_registry" {
+  value = aws_ecr_repository.repository.repository_url
+  
+}
+output "db_host" {
+  value = aws_db_instance.paguemedb.address
+  
+}
+
