@@ -66,3 +66,9 @@ jobs:
       - name: Run Docker container
         run: |
           docker run -e ClientSettings__Database__Server=${{ steps.rds.outputs.endpoint }} -p 5001:8080 --name pagueme-container-1 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      
+      - name: Cleanup
+        if: ${{ failure() }}
+        run: |
+          cd infra
+          terraform destroy -auto-approve

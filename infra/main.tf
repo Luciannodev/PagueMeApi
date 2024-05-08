@@ -15,12 +15,10 @@ resource "aws_db_instance" "default" {
   allocated_storage    = 20
   storage_type         = "gp2"
   engine               = "mysql"
-  engine_version       = "8.0.35"
   instance_class       = "db.t3.micro"
-  identifier           = var.db_name
+  db_name              = var.db_name
   username             = var.username
   password             = var.password
-  parameter_group_name = "default.mysql8.0"
   publicly_accessible  = true
   skip_final_snapshot  = true
   backup_retention_period = 0 
@@ -28,7 +26,7 @@ resource "aws_db_instance" "default" {
 
 resource "null_resource" "db_setup" {
   provisioner "local-exec" {
-    command = "mysql -v -e -h ${aws_db_instance.default.address} -u ${var.username} -p ${var.password} ${var.db_name} < ./SQL/Initial.sql"
+    command = "mysql -v -h ${aws_db_instance.default.address} -u ${var.username} -p${var.password} ${var.db_name} < ./SQL/Initial.sql"
   }
   triggers = {
     db_instance_address = aws_db_instance.default.address
