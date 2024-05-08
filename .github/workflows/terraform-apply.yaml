@@ -41,7 +41,7 @@ jobs:
           cd infra
           echo "DB_NAME:"
           terraform output db_name
-          DB_NAME=$(terraform output -raw db_name | tr ':' '_')
+          DB_NAME=$(terraform output -raw db_name | grep -oP '^\w+')
           echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
           echo "DB_USER=$(terraform output -raw db_user)" >> $GITHUB_ENV
           echo "DB_PASSWORD=$(terraform output -raw db_password)" >> $GITHUB_ENV
