@@ -11,7 +11,26 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_db_instance" "default" {
+resource "aws_security_group" "allow_mysql" {
+  name        = "allow_mysql"
+  description = "Allow mysql inbound traffic"
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_db_instance" "paguemedb" {
   allocated_storage    = 20
   storage_type         = "gp2"
   engine               = "mysql"
@@ -22,22 +41,23 @@ resource "aws_db_instance" "default" {
   publicly_accessible  = true
   skip_final_snapshot  = true
   backup_retention_period = 0 
+  vpc_security_group_ids = [aws_security_group.allow_mysql.id]
 }
 
 resource "time_sleep" "wait" {
-  depends_on = [aws_db_instance.default]
+  depends_on = [aws_db_instance.paguemedb]
 
-  create_duration = "10m"
+  create_duration = "2m"
 }
 
 resource "null_resource" "db_setup" {
   depends_on = [time_sleep.wait]
 
   provisioner "local-exec" {
-    command = "mysql -v -h ${aws_db_instance.default.address} -u ${var.username} -p${var.password} ${var.db_name} < ./SQL/Initial.sql"
+    command = "mysql -v -h ${aws_db_instance.paguemedb.address} -u ${var.username} -p${var.password} ${var.db_name} < ./SQL/Initial.sql"
   }
   triggers = {
-    db_instance_address = aws_db_instance.default.address
+    db_instance_address = aws_db_instance.paguemedb.address
   }
 }
   
