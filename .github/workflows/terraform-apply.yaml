@@ -34,16 +34,18 @@ jobs:
       - name: Fazer o deploy da aplicação
         run: |
           cd infra
-          terraform apply -auto-approve          
+          terraform apply -auto-approve
+
       - name: Set environment variables
         run: |
-            cd infra
-            echo "DB_NAME:"
-            terraform output db_name
-            echo "DB_NAME=$(terraform output -raw db_name)" >> $GITHUB_ENV
-            echo "DB_USER=$(terraform output -raw db_user)" >> $GITHUB_ENV
-            echo "DB_PASSWORD=$(terraform output -raw db_password)" >> $GITHUB_ENV
-            echo "DB_PORT=$(terraform output -raw db_port)" >> $GITHUB_ENV
+          cd infra
+          echo "DB_NAME:"
+          terraform output db_name
+          DB_NAME=$(terraform output -raw db_name | tr ':' '_')
+          echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
+          echo "DB_USER=$(terraform output -raw db_user)" >> $GITHUB_ENV
+          echo "DB_PASSWORD=$(terraform output -raw db_password)" >> $GITHUB_ENV
+          echo "DB_PORT=$(terraform output -raw db_port)" >> $GITHUB_ENV
 
       - name: Get RDS endpoint
         id: rds
