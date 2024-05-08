@@ -24,7 +24,15 @@ resource "aws_db_instance" "default" {
   backup_retention_period = 0 
 }
 
+resource "time_sleep" "wait" {
+  depends_on = [aws_db_instance.default]
+
+  create_duration = "10m"
+}
+
 resource "null_resource" "db_setup" {
+  depends_on = [time_sleep.wait]
+
   provisioner "local-exec" {
     command = "mysql -v -h ${aws_db_instance.default.address} -u ${var.username} -p${var.password} ${var.db_name} < ./SQL/Initial.sql"
   }
