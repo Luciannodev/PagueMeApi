@@ -4,3 +4,19 @@ output "public_ip" {
 output "rds_endpoint" {
   value = aws_db_instance.paguemedb.endpoint
 }
+
+output "db_name" {
+  value = aws_db_instance.paguemedb.db_name
+}
+
+output "db_user" {
+ value = aws_db_instance.paguemedb.username
+}
+
+output "db_password" {
+ value = aws_db_instance.paguemedb.password
+}
+
+output "db_port" {
+ value = aws_db_instance.paguemedb.port
+}

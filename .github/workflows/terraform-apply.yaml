@@ -35,7 +35,13 @@ jobs:
         run: |
           cd infra
           terraform apply -auto-approve          
-      
+      - name: Set environment variables
+        run: |
+         echo "DB_NAME=$(terraform output -raw db_name)" >> $GITHUB_ENV
+         echo "DB_USER=$(terraform output -raw db_user)" >> $GITHUB_ENV
+         echo "DB_PASSWORD=$(terraform output -raw db_password)" >> $GITHUB_ENV
+         echo "DB_PORT=$(terraform output -raw db_port)" >> $GITHUB_ENV
+
       - name: Get RDS endpoint
         id: rds
         run: |
@@ -53,15 +59,13 @@ jobs:
           ECR_REPOSITORY: my-ecr-repo
           IMAGE_TAG: ${{ github.sha }}
         run: |
-         docker build \
-          --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
-          --build-arg SERVER=${{ steps.rds.outputs.endpoint }} \
-          --build-arg NAME=${{ secrets.DB_NAME }} \
-          --build-arg USER=${{ secrets.DB_USER }} \
-          --build-arg PASSWORD=${{ secrets.DB_PASSWORD }} \
-          --build-arg PORT=3306 \
+          docker build \
+          --build-arg DB_NAME=${{ env.DB_NAME }} \
+          --build-arg DB_USER=${{ env.DB_USER }} \
+          --build-arg DB_PASSWORD=${{ env.DB_PASSWORD }} \
+          --build-arg DB_PORT=${{ env.DB_PORT }} \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Run Docker container
         run: |
