@@ -39,18 +39,17 @@ jobs:
       - name: Set environment variables
         run: |
           cd infra
-          echo "DB_NAME:"
-          terraform output db_name
-          echo "DB_NAME=$(terraform output -raw db_name)
-          echo  output DB_NAME
-          echo "DB_USER=$(terraform output -raw db_user)
-          echo  output DB_USER
-          echo "DB_PASSWORD=$(terraform output -raw db_password)
-          echo  output DB_PASSWORD
-          echo "DB_PORT=$(terraform output -raw db_port)
-          echo  output DB_PORT
-          echo "DB_HOST=$(terraform output -raw db_host)
-          echo  output DB_HOST
+          OUTPUTS=$(terraform output -json)
+          DB_NAME=$(echo $OUTPUTS | jq -r .db_name.value)
+          DB_USER=$(echo $OUTPUTS | jq -r .db_user.value)
+          DB_PASSWORD=$(echo $OUTPUTS | jq -r .db_password.value)
+          DB_PORT=$(echo $OUTPUTS | jq -r .db_port.value)
+          DB_HOST=$(echo $OUTPUTS | jq -r .db_host.value)
+          echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
+          echo "DB_USER=$DB_USER" >> $GITHUB_ENV
+          echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
+          echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
+          echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
 
       - name: Get RDS endpoint
         id: rds
