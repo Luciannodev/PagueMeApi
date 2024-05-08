@@ -53,8 +53,15 @@ jobs:
           ECR_REPOSITORY: my-ecr-repo
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+         docker build \
+          --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
+          --build-arg SERVER=${{ steps.rds.outputs.endpoint }} \
+          --build-arg NAME=${{ secrets.DB_NAME }} \
+          --build-arg USER=${{ secrets.DB_USER }} \
+          --build-arg PASSWORD=${{ secrets.DB_PASSWORD }} \
+          --build-arg PORT=3306 \
+          -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Run Docker container
         run: |
