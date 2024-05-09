@@ -41,11 +41,11 @@ jobs:
           cd infra
           echo "Terraform output:"
           terraform output -json
-          printf "DB_NAME=$(terraform output db_name | tr -d '\"')" >> $GITHUB_ENV
-          printf "DB_USER=$(terraform output db_user | tr -d '\"')" >> $GITHUB_ENV
-          printf "DB_PASSWORD=$(terraform output db_password | tr -d '\"')" >> $GITHUB_ENV
-          printf "DB_PORT=$(terraform output db_port | tr -d '\"')" >> $GITHUB_ENV
-          printf "DB_HOST=$(terraform output db_host | tr -d '\"')" >> $GITHUB_ENV
+          printf "DB_NAME=$(terraform output db_name | tr -d '\'')" >> $GITHUB_ENV
+          printf "DB_USER=$(terraform output db_user | tr -d '\'')" >> $GITHUB_ENV
+          printf "DB_PASSWORD=$(terraform output db_password | tr -d '\'')" >> $GITHUB_ENV
+          printf "DB_PORT=$(terraform output db_port | tr -d '\'')" >> $GITHUB_ENV
+          printf "DB_HOST=$(terraform output db_host | tr -d '\'')" >> $GITHUB_ENV
       - name: Get RDS endpoint
         id: rds
         run: |
