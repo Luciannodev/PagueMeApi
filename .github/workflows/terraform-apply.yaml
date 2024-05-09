@@ -38,16 +38,16 @@ jobs:
 
       - name: Set environment variables
         run: |
-         cd infra
-         sudo apt-get install jq
-         echo "Terraform output:"
-         terraform output -json
-           echo "DB_NAME=$(terraform output -json | jq .db_name.value)" >> $GITHUB_ENV
-           echo "DB_USER=$(terraform output -json | jq .db_user.value)" >> $GITHUB_ENV
-           echo "DB_PASSWORD=$(terraform output -json | jq .db_password.value)" >> $GITHUB_ENV
-           echo "DB_PORT=$(terraform output -json | jq .db_port.value)" >> $GITHUB_ENV
-           echo "DB_HOST=$(terraform output -json | jq .db_host.value)" >> $GITHUB_ENV
-
+          cd infra
+          sudo apt-get install jq
+          echo "Terraform output:"
+          terraform output -json
+          echo "Exit code: $?"
+          echo "DB_NAME=$(terraform output -json | jq -r .db_name.value)" >> $GITHUB_ENV
+          echo "DB_USER=$(terraform output -json | jq -r .db_user.value)" >> $GITHUB_ENV
+          echo "DB_PASSWORD=$(terraform output -json | jq -r .db_password.value)" >> $GITHUB_ENV
+          echo "DB_PORT=$(terraform output -json | jq .db_port.value)" >> $GITHUB_ENV
+          echo "DB_HOST=$(terraform output -json | jq -r .db_host.value)" >> $GITHUB_ENV
       - name: Get RDS endpoint
         id: rds
         run: |
