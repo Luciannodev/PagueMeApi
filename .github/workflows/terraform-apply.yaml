@@ -71,7 +71,10 @@ jobs:
           --build-arg DB_PORT=${{ env.DB_PORT }} \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
+     
+      - name: Set ECR_REGISTRY
+        run: echo "ECR_REGISTRY=$(aws ecr describe-repositories --repository-names my-repo --query 'repositories[0].repositoryUri' --output text)" >> $GITHUB_ENV
+      
       - name: Run Docker container
         run: |
           docker run -e ClientSettings__Database__Server=${{ steps.rds.outputs.endpoint }} -p 5001:8080 --name pagueme-container-1 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
