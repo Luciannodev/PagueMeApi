@@ -39,11 +39,14 @@ jobs:
       - name: Set environment variables
         run: |
          cd infra
-         echo "DB_NAME=$(terraform output -json | python -c "import sys, json; print(json.load(sys.stdin)['db_name'])")" >> $GITHUB_ENV
-         echo "DB_USER=$(terraform output -json | python -c "import sys, json; print(json.load(sys.stdin)['db_user'])")" >> $GITHUB_ENV
-         echo "DB_PASSWORD=$(terraform output -json | python -c "import sys, json; print(json.load(sys.stdin)['db_password'])")" >> $GITHUB_ENV
-         echo "DB_PORT=$(terraform output -json | python -c "import sys, json; print(json.load(sys.stdin)['db_port'])")" >> $GITHUB_ENV
-         echo "DB_HOST=$(terraform output -json | python -c "import sys, json; print(json.load(sys.stdin)['db_host'])")" >> $GITHUB_ENV
+         sudo apt-get install jq
+         echo "Terraform output:"
+         terraform output -json
+           echo "DB_NAME=$(terraform output -json | jq -r .db_name.value)" >> $GITHUB_ENV
+           echo "DB_USER=$(terraform output -json | jq -r .db_user.value)" >> $GITHUB_ENV
+           echo "DB_PASSWORD=$(terraform output -json | jq -r .db_password.value)" >> $GITHUB_ENV
+           echo "DB_PORT=$(terraform output -json | jq -r .db_port.value)" >> $GITHUB_ENV
+           echo "DB_HOST=$(terraform output -json | jq -r .db_host.value)" >> $GITHUB_ENV
 
       - name: Get RDS endpoint
         id: rds
