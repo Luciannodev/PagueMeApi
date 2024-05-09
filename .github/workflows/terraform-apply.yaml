@@ -38,24 +38,24 @@ jobs:
 
       - name: Set environment variables
         run: |
-         cd infra
-         OUTPUTS=$(terraform output -json)
-         echo "OUTPUTS: $OUTPUTS" | cat -v
-         DB_NAME=$(echo $OUTPUTS | jq -r .db_name.value)
-         echo "DB_NAME: $DB_NAME"
-         DB_USER=$(echo $OUTPUTS | jq -r .db_user.value)
-         echo "DB_USER: $DB_USER"
-         DB_PASSWORD=$(echo $OUTPUTS | jq -r .db_password.value)
-         echo "DB_PASSWORD: $DB_PASSWORD"
-         DB_PORT=$(echo $OUTPUTS | jq -r .db_port.value)
-         echo "DB_PORT: $DB_PORT"
-         DB_HOST=$(echo $OUTPUTS | jq -r .db_host.value)
-         echo "DB_HOST: $DB_HOST"
-         echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
-         echo "DB_USER=$DB_USER" >> $GITHUB_ENV
-         echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
-         echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
-         echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
+          cd infra
+          OUTPUTS=$(terraform output -json)
+          echo "OUTPUTS: $OUTPUTS"
+          DB_NAME=$(echo $OUTPUTS | python -c "import sys, json; print(json.load(sys.stdin)['db_name']['value'])")
+          echo "DB_NAME: $DB_NAME"
+          DB_USER=$(echo $OUTPUTS | python -c "import sys, json; print(json.load(sys.stdin)['db_user']['value'])")
+          echo "DB_USER: $DB_USER"
+          DB_PASSWORD=$(echo $OUTPUTS | python -c "import sys, json; print(json.load(sys.stdin)['db_password']['value'])")
+          echo "DB_PASSWORD: $DB_PASSWORD"
+          DB_PORT=$(echo $OUTPUTS | python -c "import sys, json; print(json.load(sys.stdin)['db_port']['value'])")
+          echo "DB_PORT: $DB_PORT"
+          DB_HOST=$(echo $OUTPUTS | python -c "import sys, json; print(json.load(sys.stdin)['db_host']['value'])")
+          echo "DB_HOST: $DB_HOST"
+          echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
+          echo "DB_USER=$DB_USER" >> $GITHUB_ENV
+          echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
+          echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
+          echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
 
       - name: Get RDS endpoint
         id: rds
