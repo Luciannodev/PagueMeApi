@@ -59,25 +59,34 @@ jobs:
         run: |
           echo "ECR_REGISTRY: $ECR_REGISTRY"
           docker build \
-          --build-arg DB_NAME=${{ env.db_name }} \
-          --build-arg DB_USER=${{ env.db_user }} \
-          --build-arg DB_HOST=${{ env.db_host }} \
-          --build-arg DB_PASSWORD=${{ env.db_password }} \
-          --build-arg DB_PORT=${{ env.db_port }} \
+          --build-arg DB_NAME=${{ env.DB_NAME }} \
+          --build-arg DB_USER=${{ env.DB_USER }} \
+          --build-arg DB_HOST=${{ env.DB_HOST }} \
+          --build-arg DB_PASSWORD=${{ env.DB_PASSWORD }} \
+          --build-arg DB_PORT=${{ env.DB_PORT }} \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-     
-      - name: Set ECR_REGISTRY
+      - name: Wait for EC2 instance
         run: |
-          echo "Output of 'terraform output -raw ecr_registry':"
-          terraform output -raw ecr_registry
-          ECR_REGISTRY=$(terraform output -raw ecr_registry)
-          echo "ECR_REGISTRY value: $ECR_REGISTRY"
-          echo "ECR_REGISTRY=$ECR_REGISTRY" >> $GITHUB_ENV
-      
-      - name: Run Docker container
+         while true; do
+           STATUS=$(aws ec2 describe-instances --instance-ids ${{ steps.terraform.outputs.instance_id }} --query 'Reservations[*].Instances[*].State.Name' --output text)
+           if [ "$STATUS" = "running" ]; then
+             break
+           else
+             echo "Waiting for EC2 instance to be ready..."
+             sleep 10
+           fi
+         done     
+      - name: Build Docker image on EC2
         run: |
-          docker run -e ClientSettings__Database__Server=${{ steps.rds.outputs.endpoint }} -p 5001:8080 --name pagueme-container-1 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "${{ secrets.EC2_PEM }}" > ec2.pem
+          chmod 600 ec2.pem
+          ssh -o StrictHostKeyChecking=no -i ec2.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+            git clone https://github.com/your-repo.git
+            cd your-repo
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          "  
       
       - name: Cleanup
         if: ${{ failure() }}
