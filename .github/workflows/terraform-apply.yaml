@@ -68,7 +68,10 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
      
       - name: Set ECR_REGISTRY
-        run: echo "ECR_REGISTRY=$(aws ecr describe-repositories --repository-names my-ecr-repo --query 'repositories[0].repositoryUri' --output text)" >> $GITHUB_ENV
+        run: |
+          ECR_REGISTRY=$(terraform output -raw ecr_registry | grep -v "::debug::")
+          echo "ECR_REGISTRY value: $ECR_REGISTRY"
+          echo "ECR_REGISTRY=$ECR_REGISTRY" >> $GITHUB_ENV
       
       - name: Run Docker container
         run: |
