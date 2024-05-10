@@ -59,13 +59,14 @@ jobs:
         run: |
           echo "ECR_REGISTRY: $ECR_REGISTRY"
           docker build \
-          --build-arg DB_NAME=${{ env.DB_NAME }} \
-          --build-arg DB_USER=${{ env.DB_USER }} \
-          --build-arg DB_HOST=${{ env.DB_HOST }} \
-          --build-arg DB_PASSWORD=${{ env.DB_PASSWORD }} \
-          --build-arg DB_PORT=${{ env.DB_PORT }} \
+          --build-arg DB_NAME=${{ env.db_name }} \
+          --build-arg DB_USER=${{ env.db_user }} \
+          --build-arg DB_HOST=${{ env.db_host }} \
+          --build-arg DB_PASSWORD=${{ env.db_password }} \
+          --build-arg DB_PORT=${{ env.db_port }} \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+     
       - name: Wait for EC2 instance
         run: |
          while true; do
@@ -77,6 +78,7 @@ jobs:
              sleep 10
            fi
          done     
+
       - name: Build Docker image on EC2
         run: |
           echo "${{ secrets.EC2_PEM }}" > ec2.pem
