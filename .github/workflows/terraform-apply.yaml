@@ -69,7 +69,9 @@ jobs:
      
       - name: Set ECR_REGISTRY
         run: |
-          ECR_REGISTRY=$(terraform output -raw ecr_registry | grep -v "::debug::")
+          echo "Output of 'terraform output -raw ecr_registry':"
+          terraform output -raw ecr_registry
+          ECR_REGISTRY=$(terraform output -raw ecr_registry)
           echo "ECR_REGISTRY value: $ECR_REGISTRY"
           echo "ECR_REGISTRY=$ECR_REGISTRY" >> $GITHUB_ENV
       

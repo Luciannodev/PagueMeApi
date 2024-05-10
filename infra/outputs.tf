@@ -25,8 +25,7 @@ output "db_port" {
 }
 
 output "ecr_registry" {
-  value = aws_ecr_repository.repository.repository_url
-  
+  value = aws_ecr_repository.repository.repository_url 
 }
 output "db_host" {
   value = aws_db_instance.paguemedb.address
