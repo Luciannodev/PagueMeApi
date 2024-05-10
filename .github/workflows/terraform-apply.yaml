@@ -66,25 +66,13 @@ jobs:
           --build-arg DB_PORT=${{ env.db_port }} \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-     
-      - name: Wait for EC2 instance
-        run: |
-         while true; do
-           STATUS=$(aws ec2 describe-instances --instance-ids ${{ steps.terraform.outputs.instance_id }} --query 'Reservations[*].Instances[*].State.Name' --output text)
-           if [ "$STATUS" = "running" ]; then
-             break
-           else
-             echo "Waiting for EC2 instance to be ready..."
-             sleep 10
-           fi
-         done     
 
       - name: Build Docker image on EC2
         run: |
           echo "${{ secrets.EC2_PEM }}" > ec2.pem
           chmod 600 ec2.pem
           ssh -o StrictHostKeyChecking=no -i ec2.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
-            git clone https://github.com/your-repo.git
+            git clone https://github.com/Luciannodev/PagueMeApi
             cd your-repo
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
