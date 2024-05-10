@@ -38,12 +38,17 @@ jobs:
       - name: Set environment variables
         run: |
           cd infra
-          DB_NAME=$(terraform output -raw db_name | grep -o '^[^:]*')
-          echo "DB_NAME value: $DB_NAME"
-          echo "DB_USER=$(terraform output -raw db_user)" >> $GITHUB_ENV
-          echo "DB_HOST=$(terraform output -raw db_host)" >> $GITHUB_ENV
-          echo "DB_PASSWORD=$(terraform output -raw db_password)" >> $GITHUB_ENV
-          echo "DB_PORT=$(terraform output -raw db_port)" >> $GITHUB_ENV
+           DB_NAME=$(terraform output -raw db_name | grep -v "::debug::")
+           echo "DB_NAME value: $DB_NAME"
+           echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
+           DB_USER=$(terraform output -raw db_user | grep -v "::debug::")
+           echo "DB_USER=$DB_USER" >> $GITHUB_ENV
+           DB_HOST=$(terraform output -raw db_host | grep -v "::debug::")
+           echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
+           DB_PASSWORD=$(terraform output -raw db_password | grep -v "::debug::")
+           echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
+           DB_PORT=$(terraform output -raw db_port | grep -v "::debug::")
+           echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
