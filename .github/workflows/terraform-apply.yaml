@@ -31,14 +31,11 @@ jobs:
         run: |
           cd infra
           terraform init
-      - name: Fazer o deploy da aplicação
-        run: |
-          cd infra
           terraform apply -auto-approve
-          
       - name: Set environment variables
         run: |
           cd infra
+          echo "DB_NAME value: $(terraform output -raw db_name)"
           echo "DB_NAME=$(terraform output -raw db_name)" >> $GITHUB_ENV
           echo "DB_USER=$(terraform output -raw db_user)" >> $GITHUB_ENV
           echo "DB_HOST=$(terraform output -raw db_host)" >> $GITHUB_ENV
