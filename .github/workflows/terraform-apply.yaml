@@ -35,6 +35,7 @@ jobs:
           cd infra
           terraform init
           terraform apply -auto-approve
+
       - name: Set environment variables
         run: |
           cd infra
@@ -49,6 +50,7 @@ jobs:
            echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
            DB_PORT=$(terraform output -raw db_port | grep -v "::debug::")
            echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
+      
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -66,7 +68,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
      
       - name: Set ECR_REGISTRY
-        run: echo "ECR_REGISTRY=$(aws ecr describe-repositories --repository-names my-repo --query 'repositories[0].repositoryUri' --output text)" >> $GITHUB_ENV
+        run: echo "ECR_REGISTRY=$(aws ecr describe-repositories --repository-names my-ecr-repo --query 'repositories[0].repositoryUri' --output text)" >> $GITHUB_ENV
       
       - name: Run Docker container
         run: |
