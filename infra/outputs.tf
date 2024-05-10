@@ -32,3 +32,6 @@ output "db_host" {
   
 }
 
+output "instance_id" {
+  value = aws_instance.myapp.id
+  }
