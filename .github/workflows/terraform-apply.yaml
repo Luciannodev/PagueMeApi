@@ -74,16 +74,12 @@ jobs:
 
       - name: Build Docker image on EC2
         run: |
-          echo "${{ secrets.EC2_PEM }}" > ec2.pem
+          echo "${{ secrets.PRIVATE_KEY }}" > ec2.pem
           cat ec2.pem
           chmod 600 ec2.pem
           echo "User: ${{ secrets.EC2_USER }}"
           echo "Host: ${{ secrets.EC2_HOST }}"
-          ssh -o StrictHostKeyChecking=no -i ec2.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "ls"
-            git clone https://github.com/Luciannodev/PagueMeApi
-            cd your-repo
-            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          ssh -o StrictHostKeyChecking=no -i ec2.pem ubuntu@${{ secrets.EC2_IP }} "docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ."
           "  
       - name: Cleanup
         if: ${{ failure() }}
