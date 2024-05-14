@@ -27,7 +27,7 @@ jobs:
         run: |
           aws secretsmanager get-secret-value --secret-id example --query SecretString --output text > ec2.pem
           chmod 600 ec2.pem
-                
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -38,6 +38,9 @@ jobs:
       - name: Instalar o Terraform
         uses: hashicorp/setup-terraform@v1.3.2
 
+      - name: Remove dependency lock file
+        run: rm -f .terraform.lock.hcl
+      
       - name: Inicializar o Terraform
         run: |
           cd infra
