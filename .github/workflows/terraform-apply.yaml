@@ -39,7 +39,9 @@ jobs:
         uses: hashicorp/setup-terraform@v1.3.2
 
       - name: Remove dependency lock file
-        run: rm -f .terraform.lock.hcl
+        run:  |   
+          cd infra
+          rm -f .terraform.lock.hcl
       
       - name: Inicializar o Terraform
         run: |
