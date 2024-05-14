@@ -11,6 +11,19 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+
+
+resource "tls_private_key" "example" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "deployer" {
+  key_name   = "deployer-key"
+  public_key = tls_private_key.example.public_key_openssh
+}
+
+
 resource "aws_security_group" "allow_mysql" {
   name        = "allow_mysql"
   description = "Allow mysql inbound traffic"
@@ -60,8 +73,6 @@ resource "null_resource" "db_setup" {
     db_instance_address = aws_db_instance.paguemedb.address
   }
 }
-  
-
 
 resource "aws_ecr_repository" "repository" {
   name = "my-ecr-repo"
@@ -70,6 +81,7 @@ resource "aws_ecr_repository" "repository" {
 resource "aws_instance" "myapp" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
+  key_name      = aws_key_pair.deployer.key_name
   user_data = <<-EOF
               #!/bin/bash
               sudo apt-get update
@@ -82,4 +94,13 @@ resource "aws_instance" "myapp" {
     Provisioner = "Terraform"
     Repo        = var.repo
   }
+  
+}
+resource "aws_secretsmanager_secret" "secret_ec2" {
+  name = "secret_ec2"
+}
+
+resource "aws_secretsmanager_secret_version" "secret_ec2_version" {
+  secret_id     = aws_secretsmanager_secret.secret_ec2.id
+  secret_string = tls_private_key.example.private_key_pem
 }
