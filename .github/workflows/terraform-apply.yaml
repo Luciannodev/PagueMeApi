@@ -13,10 +13,6 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v2
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-      
       - name: Disable debug logging
         run: echo "TF_LOG=" >> $GITHUB_ENV
       
@@ -38,6 +34,10 @@ jobs:
           aws secretsmanager get-secret-value --secret-id example --query SecretString --output text > ec2.pem
           chmod 600 ec2.pem
 
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        
       - name: Set environment variables
         run: |
           cd infra
