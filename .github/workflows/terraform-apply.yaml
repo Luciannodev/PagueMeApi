@@ -38,7 +38,7 @@ jobs:
 
       - name: Get private key from AWS Secrets Manager
         run: |
-          aws secretsmanager get-secret-value --secret-id example --query SecretString --output text > ec2.pem
+          aws secretsmanager get-secret-value --secret-id secret_ec2 --query SecretString --output text > ec2.pem
           chmod 600 ec2.pem
 
       - name: Set environment variables
