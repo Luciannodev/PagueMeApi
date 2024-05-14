@@ -12,13 +12,24 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v2
+      
+      - name: Configurar ambiente AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
 
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      
       - name: Disable debug logging
         run: echo "TF_LOG=" >> $GITHUB_ENV
       
       - name: Instalar o Terraform
         uses: hashicorp/setup-terraform@v1.3.2
-      
+
       - name: Inicializar o Terraform
         run: |
           cd infra
@@ -26,18 +37,10 @@ jobs:
           terraform apply -auto-approve
 
       - name: Get private key from AWS Secrets Manager
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ap-south-1
         run: |
           aws secretsmanager get-secret-value --secret-id example --query SecretString --output text > ec2.pem
           chmod 600 ec2.pem
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        
       - name: Set environment variables
         run: |
           cd infra
