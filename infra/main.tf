@@ -96,11 +96,19 @@ resource "aws_instance" "myapp" {
   }
   
 }
-resource "aws_secretsmanager_secret" "secret_ec2" {
-  name = "secret_ec2"
+
+resource "aws_s3_bucket" "bucket" {
+  bucket = "my-pem-bucket"
+  acl    = "private"
+
+  versioning {
+    enabled = true
+  }
 }
 
-resource "aws_secretsmanager_secret_version" "secret_ec2_version" {
-  secret_id     = aws_secretsmanager_secret.secret_ec2.id
-  secret_string = tls_private_key.example.private_key_pem
+resource "aws_s3_bucket_object" "object" {
+  bucket = aws_s3_bucket.bucket.id
+  key    = "private_key.pem"
+  content = tls_private_key.example.private_key_pem
+  acl    = "private"
 }

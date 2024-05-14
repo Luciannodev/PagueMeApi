@@ -38,8 +38,8 @@ jobs:
 
       - name: Get private key from AWS Secrets Manager
         run: |
-          aws secretsmanager get-secret-value --secret-id secret_ec2 --query SecretString --output text > ec2.pem
-          chmod 600 ec2.pem
+            aws s3 cp s3://my-pem-bucket/private_key.pem ec2.pem
+            chmod 600 ec2.pem
 
       - name: Set environment variables
         run: |
@@ -85,7 +85,6 @@ jobs:
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           "  
-      
       - name: Cleanup
         if: ${{ failure() }}
         run: |
