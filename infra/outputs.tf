@@ -35,3 +35,9 @@ output "db_host" {
 output "instance_id" {
   value = aws_instance.myapp.id
   }
+
+output "private_key_pem" {
+  description = "Private key in PEM format"
+  value       = tls_private_key.example.private_key_pem
+  sensitive   = true
+}
