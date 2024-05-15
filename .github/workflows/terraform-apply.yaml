@@ -73,7 +73,10 @@ jobs:
           --build-arg DB_PORT=${{ env.db_port }} \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
+      - name: Debug EC2_IP
+        run: echo $EC2_IP
+      - name: Debug EC2_IP
+        run: echo ${{ env.EC2_IP }}      
       - name: Build Docker image on EC2
         run: |
           echo "${{ secrets.PRIVATE_KEY }}" > ec2.pem
