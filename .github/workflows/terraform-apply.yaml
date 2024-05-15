@@ -55,7 +55,7 @@ jobs:
            echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
            DB_PORT=$(terraform output -raw db_port | grep -v "::debug::")
            echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
-           EC2_IP=$(terraform output -raw public_ip)
+           EC2_IP=$(terraform output -raw public_ip | grep -v "::debug::")
            echo "EC2_IP=$EC2_IP" >> $GITHUB_ENV
       
       - name: Build, tag, and push image to Amazon ECR
@@ -79,9 +79,11 @@ jobs:
         run: echo ${{ env.EC2_IP }}      
       - name: Build Docker image on EC2
         run: |
-          echo "${{ secrets.PRIVATE_KEY }}" > ec2.pem
-          chmod 600 ec2.pem
-          ssh -o StrictHostKeyChecking=no -i ec2.pem ubuntu@${{ env.EC2_IP }} "docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ."
+          ssh -o StrictHostKeyChecking=no -i ec2.pem ubuntu@$EC2_IP "echo 'Hello, World!'"
+        # run: |
+        #   echo "${{ secrets.PRIVATE_KEY }}" > ec2.pem
+        #   chmod 600 ec2.pem
+        #   ssh -o StrictHostKeyChecking=no -i ec2.pem ubuntu@${{ env.EC2_IP }} "docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ."
            
       - name: Cleanup
         if: ${{ failure() }}
