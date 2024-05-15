@@ -78,7 +78,7 @@ jobs:
         run: |
           echo "${{ secrets.PRIVATE_KEY }}" > ec2.pem
           chmod 600 ec2.pem
-          ssh -o StrictHostKeyChecking=no -i ec2.pem ubuntu@${{ secrets.EC2_IP }} "docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ."
+          ssh -o StrictHostKeyChecking=no -i ec2.pem ubuntu@${{ env.EC2_IP }} "docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ."
            
       - name: Cleanup
         if: ${{ failure() }}
