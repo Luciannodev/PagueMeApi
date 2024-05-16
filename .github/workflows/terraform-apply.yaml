@@ -8,86 +8,87 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        TF_STATE_BUCKET_NAME: ${{ secrets.AWS_TF_STATE_BUCKET_NAME }}
+        PRIVATE_SSH_KEY: ${{ secrets.AWS_SSH_KEY_PRIVATE }}
+        PUBLIC_SSH_KEY: ${{ secrets.AWS_SSH_KEY_PUBLIC }}
+        AWS_REGION: ap-south-1
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v2
-      
-      - name: Configurar ambiente AWS
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-      
-      - name: Disable debug logging
-        run: echo "TF_LOG=" >> $GITHUB_ENV
-      
-      - name: Instalar o Terraform
-        uses: hashicorp/setup-terraform@v1.3.2
-
-      - name: Inicializar o Terraform
-        run: |
-          cd infra
-          terraform init
-          terraform apply -auto-approve
-
-      - name: Get private key from AWS Secrets Manager
-        run: |
-            aws s3 cp s3://my-pem-bucket/private_key.pem ec2.pem
-            chmod 600 ec2.pem
-
-      - name: Set environment variables
-        run: |
-          cd infra
-           DB_NAME=$(terraform output -raw db_name | grep -v "::debug::")
-           echo "DB_NAME value: $DB_NAME"
-           echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
-           DB_USER=$(terraform output -raw db_user | grep -v "::debug::")
-           echo "DB_USER=$DB_USER" >> $GITHUB_ENV
-           DB_HOST=$(terraform output -raw db_host | grep -v "::debug::")
-           echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
-           DB_PASSWORD=$(terraform output -raw db_password | grep -v "::debug::")
-           echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
-           DB_PORT=$(terraform output -raw db_port | grep -v "::debug::")
-           echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
-           EC2_IP=$(terraform output -raw public_ip | grep -v "::debug::")
-           echo "EC2_IP value: $EC2_IP"
-           echo "EC2_IP=$EC2_IP" >> $GITHUB_ENV
-      
-      - name: Build, tag, and push image to Amazon ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: my-ecr-repo
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          echo "ECR_REGISTRY: $ECR_REGISTRY"
-          docker build \
-          --build-arg DB_NAME=${{ env.db_name }} \
-          --build-arg DB_USER=${{ env.db_user }} \
-          --build-arg DB_HOST=${{ env.db_host }} \
-          --build-arg DB_PASSWORD=${{ env.db_password }} \
-          --build-arg DB_PORT=${{ env.db_port }} \
-          -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-      - name: Debug EC2_IP
-        run: echo $EC2_IP
-      - name: Debug EC2_IP
-        run: echo ${{ env.EC2_IP }}      
-      - name: Build Docker image on EC2
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ec2.pem ubuntu@$EC2_IP "echo 'Hello, World!'"
-        # run: |
-        #   echo "${{ secrets.PRIVATE_KEY }}" > ec2.pem
-        #   chmod 600 ec2.pem
-        #   ssh -o StrictHostKeyChecking=no -i ec2.pem ubuntu@${{ env.EC2_IP }} "docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ."
-           
-      - name: Cleanup
-        if: ${{ failure() }}
-        run: |
-          cd infra
-          terraform destroy -auto-approve
+    - name: checkout repo
+      uses: actions/checkout@v2
+    
+    - name: setup terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_wrapper: false
+    
+    - name: Terraform Init
+      id: init
+      run: terraform init -backend-config="bucket=$TF_STATE_BUCKET_NAME" -backend-config="region=ap-south-1"
+      working-directory: ./infra
+    
+    - name: Terraform Plan
+      id: plan
+      run: |-
+        terraform plan \
+        -var="region=us-east-1" \
+        -var="bucket=$TF_STATE_BUCKET_NAME" \
+        -var="public_key=$PUBLIC_SSH_KEY" \
+        -var="private_key=$PRIVATE_SSH_KEY" \
+        -var="key_name=deployer-key" \
+        -out=PLAN
+      working-directory: ./infra
+    - name: Terraform Apply
+      id: apply
+      run: |-
+        terraform apply PLAN
+      working-directory: ./infra
+    
+    - name: Set output
+      id: set-dns
+      run: |-
+          echo "::set-output name=instance_public_dns::$(terraform output instance_public_ip)"
+      working-directory: ./infra
+    
+    - name: Login to AWS ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - run: echo SERVER_PUBLIC_IP=${{ needs.deploy-infra.outputs.SERVER_PUBLIC_DNS }} >> $GITHUB_ENV
+    
+    - name: Build, tag, and push docker image to Amazon ECR
+      env:
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: example-dotnet-app
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+      working-directory: ./
+    - name: Deploy Docker Image to EC2
+      env:
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: example-node-app
+        IMAGE_TAG: ${{ github.sha }}
+        AWS_DEFAULT_REGION: us-east-1
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.SERVER_PUBLIC_IP }}
+        username: ubuntu
+        key: ${{ env.PRIVATE_SSH_KEY }}
+        envs: PRIVATE_SSH_KEY,REGISTRY,REPOSITORY,IMAGE_TAG,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION
+        script: |-
+          sudo apt update
+          sudo apt install docker.io -y
+          sudo apt install awscli -y
+          sudo $(aws ecr get-login --no-include-email --region us-east-1);
+          sudo docker stop myappcontainer || true
+          sudo docker rm myappcontainer || true
+          sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          sudo docker run -d --name myappcontainer -p 80:8080 $REGISTRY/$REPOSITORY:$IMAGE_TAG
+    - name: Cleanup
+      if: ${{ failure() }}
+      run: |
+        cd infra
+        terraform destroy -auto-approve
