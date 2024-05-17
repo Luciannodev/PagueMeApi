@@ -17,7 +17,7 @@ resource "aws_instance" "dotnet_server" {
   instance_type = var.instance_type
   key_name      = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.maingroup.id]
-  iam_instance_profile   = aws_iam_instance_profile.ec2-profile.name
+  iam_instance_profile   = aws_iam_role.ecr_role.name
   connection {
     type        = "ssh"
     host        = self.public_ip
@@ -34,10 +34,6 @@ resource "aws_instance" "dotnet_server" {
   
 }
 
-resource "aws_iam_instance_profile" "ec2-profile" {
-  name = "ec2-profile"
-  role = "ECR-LOGIN-AUTO"
-}
 
 resource "aws_security_group" "maingroup" {
   egress = [
