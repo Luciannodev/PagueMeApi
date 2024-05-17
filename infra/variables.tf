@@ -42,13 +42,3 @@ variable "username" {
 variable "password" {
   default = "lembrei12"
 }
-
-variable "public_key" {
-  
-}
-variable "private_key" {
-  
-}
-variable "key_name" {
-  
-}
