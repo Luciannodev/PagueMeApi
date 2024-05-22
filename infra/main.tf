@@ -1,3 +1,26 @@
+resource "aws_iam_role" "ecr_role" {
+  name = "ecr_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+
+
+
 data "aws_ami" "ubuntu" {
   most_recent = true
   filter {
@@ -13,6 +36,7 @@ data "aws_ami" "ubuntu" {
 
 
 resource "aws_instance" "dotnet_server" {
+  
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   key_name      = aws_key_pair.deployer.key_name
@@ -31,7 +55,7 @@ resource "aws_instance" "dotnet_server" {
     Provisioner = "Terraform"
     Repo        = var.repo
   }
-  
+  depends_on = [ aws_iam_role.ecr_role ]
 }
 
 
