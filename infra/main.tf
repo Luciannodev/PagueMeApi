@@ -18,7 +18,10 @@ resource "aws_iam_role" "ecr_role" {
 EOF
 }
 
-
+resource "aws_iam_instance_profile" "ecr_instance_profile" {
+  name = "ecr_instance_profile"
+  role = aws_iam_role.ecr_role.name
+}
 
 
 data "aws_ami" "ubuntu" {
@@ -41,7 +44,7 @@ resource "aws_instance" "dotnet_server" {
   instance_type = var.instance_type
   key_name      = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.maingroup.id]
-  iam_instance_profile   = aws_iam_role.ecr_role.name
+  iam_instance_profile = aws_iam_instance_profile.ecr_instance_profile.name
   connection {
     type        = "ssh"
     host        = self.public_ip
