@@ -24,9 +24,9 @@ output "public_ip" {
 #  value = aws_db_instance.paguemedb.port
 # }
 
-# output "ecr_registry" {
-#   value = aws_ecr_repository.repository.repository_url 
-# }
+output "ecr_repository_url" {
+  value = aws_ecr_repository.repository.repository_url 
+}
 # output "db_host" {
 #   value = aws_db_instance.paguemedb.address
 # }
