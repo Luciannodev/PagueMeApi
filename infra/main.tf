@@ -25,6 +25,10 @@ resource "aws_iam_instance_profile" "ecr_instance_profile" {
 
 resource "aws_ecr_repository" "repository" {
   name = "example-dotnet-app"
+
+    lifecycle {
+    ignore_changes = [name]
+  }
 }
 
 data "aws_ami" "ubuntu" {
