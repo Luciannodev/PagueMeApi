@@ -23,7 +23,7 @@ resource "aws_iam_instance_profile" "ecr_instance_profile" {
   role = aws_iam_role.ecr_role.name
 }
 
-resource "aws_ecr_repository" "example" {
+resource "aws_ecr_repository" "repository" {
   name = "example-dotnet-app"
 }
 
