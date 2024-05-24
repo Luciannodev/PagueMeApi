@@ -61,7 +61,7 @@ resource "aws_instance" "dotnet_server" {
     Provisioner = "Terraform"
     Repo        = var.repo
   }
-  depends_on = [ aws_iam_role.ecr_role, aws_iam_instance_profile.ecr_instance_profile , aws_ecr_repository.example]
+  depends_on = [ aws_iam_role.ecr_role, aws_iam_instance_profile.ecr_instance_profile , aws_ecr_repository.repository]
 }
 
 
