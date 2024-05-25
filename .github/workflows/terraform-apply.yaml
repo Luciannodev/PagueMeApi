@@ -33,7 +33,7 @@ jobs:
       id: plan
       run: |-
         terraform plan \
-        -var="region=us-east-1" \
+        -var="region=$AWS_REGION" \
         -var="bucket=$TF_STATE_BUCKET_NAME" \
         -var="public_key=$PUBLIC_SSH_KEY" \
         -var="private_key=$PRIVATE_SSH_KEY" \
@@ -56,10 +56,6 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
     - run: echo SERVER_PUBLIC_IP=${{ needs.deploy-infra.outputs.SERVER_PUBLIC_DNS }} >> $GITHUB_ENV
-    - name: Set ECR repository URL
-      id: set-ecr-url
-      run: echo "::set-output name=ecr_repository_url::$(terraform output ecr_repository_url)"
-      working-directory: ./infra
 
     - name: Set ECR repository URL
       id: set-ecr-url
@@ -79,7 +75,7 @@ jobs:
         REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         REPOSITORY: example-node-app
         IMAGE_TAG: ${{ github.sha }}
-        AWS_DEFAULT_REGION: us-east-1
+        AWS_DEFAULT_REGION: $AWS_REGION
       uses: appleboy/ssh-action@master
       with:
         host: ${{ env.SERVER_PUBLIC_IP }}
@@ -90,7 +86,7 @@ jobs:
           sudo apt update
           sudo apt install docker.io -y
           sudo apt install awscli -y
-          sudo $(aws ecr get-login --no-include-email --region us-east-1);
+          sudo $(aws ecr get-login --no-include-email --region $AWS_REGION);
           sudo docker stop myappcontainer || true
           sudo docker rm myappcontainer || true
           sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
