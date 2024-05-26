@@ -57,6 +57,11 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
     - run: echo SERVER_PUBLIC_IP=${{ needs.deploy-infra.outputs.SERVER_PUBLIC_DNS }} >> $GITHUB_ENV
 
+    - name: Set server public IP
+      id: set-server_public_ip
+      run: echo "::set-output name=server_public_ip::$(terraform output -raw server_public_ip)"
+      working-directory: ./infra
+    
     - name: Set ECR repository URL
       id: set-ecr-url
       run: echo "::set-output name=ecr_repository_url::$(terraform output -raw ecr_repository_url)"
