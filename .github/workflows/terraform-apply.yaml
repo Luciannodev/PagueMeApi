@@ -67,9 +67,10 @@ jobs:
         ECR_REGISTRY: ${{ steps.set-ecr-url.outputs.ecr_repository_url }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
+        docker build -t $ECR_REGISTRY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY:$IMAGE_TAG
       working-directory: ./
+
     - name: Deploy Docker Image to EC2
       env:
         REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -89,8 +90,8 @@ jobs:
           sudo $(aws ecr get-login --no-include-email --region $AWS_REGION);
           sudo docker stop myappcontainer || true
           sudo docker rm myappcontainer || true
-          sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
-          sudo docker run -d --name myappcontainer -p 80:8080 $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          sudo docker pull $ECR_REGISTRY:$IMAGE_TAG
+          sudo docker run -d --name myappcontainer -p 80:8080 $ECR_REGISTRY:$IMAGE_TAG
     - name: Cleanup
       if: ${{ failure() }}
       run: |
