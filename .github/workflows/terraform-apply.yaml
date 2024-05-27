@@ -80,7 +80,7 @@ jobs:
       env:
         REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         REPOSITORY: example-node-app
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: latest
         AWS_DEFAULT_REGION: $AWS_REGION
         ECR_REGISTRY: ${{ steps.set-ecr-url.outputs.ecr_repository_url }}
       uses: appleboy/ssh-action@master
@@ -89,9 +89,6 @@ jobs:
         username: ubuntu
         key: ${{ env.PRIVATE_SSH_KEY }}
         envs: PRIVATE_SSH_KEY,REGISTRY,REPOSITORY,IMAGE_TAG,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION
-        run: |
-          echo "ECR_REGISTRY: $ECR_REGISTRY"
-          echo "IMAGE_TAG: $IMAGE_TAG"
         script: |
           sudo apt update
           sudo apt install docker.io -y
