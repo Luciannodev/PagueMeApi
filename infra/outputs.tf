@@ -24,16 +24,16 @@ output "server_public_ip" {
 #  value = aws_db_instance.paguemedb.port
 # }
 
-output "ecr_repository_url" {
-  value = aws_ecr_repository.repository.repository_url 
-}
-# output "db_host" {
-#   value = aws_db_instance.paguemedb.address
+# output "ecr_repository_url" {
+#   value = aws_ecr_repository.repository.repository_url 
 # }
+# # output "db_host" {
+# #   value = aws_db_instance.paguemedb.address
+# # }
 
-output "instance_id" {
-  value = aws_instance.dotnet_server.id
-  }
+# output "instance_id" {
+#   value = aws_instance.dotnet_server.id
+#   }
 
 # output "private_key_pem" {
 #   description = "Private key in PEM format"
