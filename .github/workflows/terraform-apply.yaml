@@ -95,9 +95,9 @@ jobs:
            sudo apt update
            sudo apt install docker.io -y
            sudo apt install awscli -y
-           sudo $(aws ecr get-login --no-include-email --region $AWS_REGION);
-           sudo docker stop myappcontainer || true
-           sudo docker rm myappcontainer || true
+           LOGIN_COMMAND=$(sudo aws ecr get-login --no-include-email --region $AWS_REGION)
+           sudo $LOGIN_COMMAND
+           sudo docker run -d --name myappcontainer -p 80:8080 $ECR_REGISTRY
            sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
            sudo docker run -d --name myappcontainer -p 80:8080 $REGISTRY/$REPOSITORY:$IMAGE_TAG
      - name: Cleanup
