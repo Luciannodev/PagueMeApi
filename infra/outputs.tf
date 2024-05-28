@@ -1,5 +1,6 @@
-output "server_public_ip" {
+output "instance_public_ip" {
   value = aws_instance.dotnet_server.public_ip
+  sensitive = true
 }
 # output "rds_endpoint" {
 #   value = aws_db_instance.paguemedb.endpoint
