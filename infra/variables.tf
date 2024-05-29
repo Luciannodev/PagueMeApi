@@ -5,7 +5,7 @@ variable "region" {
 
 variable "name" {
   description = "name of the application"
-  default     = "myapp"
+  default     = "paguemeapi"
 }
 
 
