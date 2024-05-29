@@ -53,13 +53,38 @@ resource "aws_instance" "dotnet_server" {
   vpc_security_group_ids = [aws_security_group.maingroup.id]
   iam_instance_profile = aws_iam_instance_profile.ecr_instance_profile.name
 
-    user_data = <<-EOF
-              #!/bin/bash
-              apt update -y
-              apt install -y amazon-cloudwatch-agent
-              echo '${data.template_file.cloudwatch_agent_config.rendered}' > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
-              /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
-              EOF
+  user_data = <<-EOF
+                #!/bin/bash
+                apt update -y
+                apt install -y amazon-cloudwatch-agent
+                cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json << 'CONFIG'
+                {
+                  "agent": {
+                    "metrics_collection_interval": 60,
+                    "run_as_user": "root"
+                  },
+                  "logs": {
+                    "logs_collected": {
+                      "files": {
+                        "collect_list": [
+                          {
+                            "file_path": "/var/log/syslog",
+                            "log_group_name": "syslog",
+                            "log_stream_name": "${HOSTNAME}"
+                          },
+                          {
+                            "file_path": "/var/log/docker",
+                            "log_group_name": "docker",
+                            "log_stream_name": "${HOSTNAME}"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+                CONFIG
+                /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+                EOF
 
   connection {
     type        = "ssh"
