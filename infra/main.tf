@@ -70,12 +70,12 @@ resource "aws_instance" "dotnet_server" {
                           {
                             "file_path": "/var/log/syslog",
                             "log_group_name": "syslog",
-                            "log_stream_name": "${self.instance_id}"
+                            "log_stream_name": "$(hostname)"
                           },
                           {
                             "file_path": "/var/log/docker",
                             "log_group_name": "docker",
-                            "log_stream_name": "${self.instance_id}"
+                            "log_stream_name": "$(hostname)"
                           }
                         ]
                       }
