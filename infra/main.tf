@@ -44,6 +44,10 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+data "template_file" "cloudwatch_agent_config" {
+  template = file("${path.module}/cloudwatch-agent-config.json")
+}
+
 
 resource "aws_instance" "dotnet_server" {
   
@@ -52,6 +56,15 @@ resource "aws_instance" "dotnet_server" {
   key_name      = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.maingroup.id]
   iam_instance_profile = aws_iam_instance_profile.ecr_instance_profile.name
+
+    user_data = <<-EOF
+              #!/bin/bash
+              apt update -y
+              apt install -y amazon-cloudwatch-agent
+              echo '${data.template_file.cloudwatch_agent_config.rendered}' > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+              /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+              EOF
+
   connection {
     type        = "ssh"
     host        = self.public_ip
