@@ -44,10 +44,6 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-data "template_file" "cloudwatch_agent_config" {
-  template = file("${path.module}/cloudwatch-agent-config.json")
-}
-
 
 resource "aws_instance" "dotnet_server" {
   
