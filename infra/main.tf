@@ -18,6 +18,14 @@ resource "aws_iam_role" "ecr_role" {
 EOF
 }
 
+resource "aws_cloudwatch_log_group" "syslog" {
+  name = "syslog"
+}
+
+resource "aws_cloudwatch_log_group" "docker" {
+  name = "docker"
+}
+
 resource "aws_iam_role_policy_attachment" "ecr_role_cloudwatch_logs_full_access" {
   role       = aws_iam_role.ecr_role.name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
@@ -74,12 +82,12 @@ resource "aws_instance" "dotnet_server" {
                         {
                           "file_path": "/var/log/syslog",
                           "log_group_name": "syslog",
-                          "log_stream_name": "$(hostname)"
+                          "log_stream_name": "paguemeapi"
                         },
                         {
                           "file_path": "/var/log/docker",
                           "log_group_name": "docker",
-                          "log_stream_name": "$(hostname)"
+                          "log_stream_name": "paguemeapi"
                         }
                       ]
                     }
