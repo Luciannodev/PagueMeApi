@@ -98,7 +98,7 @@ jobs:
            LOGIN_COMMAND=$(aws ecr get-login --no-include-email --region $AWS_REGION)
            sudo $LOGIN_COMMAND
            sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
-           sudo docker run -d --name myappcontainer -p 80:8080 $REGISTRY/$REPOSITORY:$IMAGE_TAG
+           sudo docker run --name myappcontainer -p 80:8080 $REGISTRY/$REPOSITORY:$IMAGE_TAG
      - name: Cleanup
        if: ${{ failure() }}
        run: |
